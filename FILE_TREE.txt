@@ -1,0 +1,262 @@
+dc-portfolio/
+│
+├── sanity/
+│   ├── schemas/                          # Schema definitions
+│   │   ├── index.ts                      # Export all schemas
+│   │   ├── blockContent.ts               # Rich text/portable text
+│   │   ├── project.ts                    # Photography project
+│   │   ├── post.ts                       # Blog post
+│   │   ├── navigation.ts                 # Navigation menu
+│   │   ├── siteSettings.ts               # Global settings
+│   │   └── about.ts                      # About page
+│   │
+│   ├── lib/                              # Utilities & queries
+│   │   ├── client.ts                     # Sanity client config
+│   │   ├── image.ts                      # Image optimization
+│   │   └── queries.ts                    # GROQ queries (18 functions)
+│   │
+│   ├── types.ts                          # TypeScript definitions
+│   └── sanity.config.ts                  # Studio configuration
+│
+├── .env.example                          # Environment template
+├── .env.local                            # (Create from .env.example)
+│
+├── README_SANITY.md                      # Technical reference
+├── SANITY_SETUP.md                       # Detailed setup guide
+├── CMS_QUICK_START.md                    # User guide for photographers
+├── DEPENDENCIES.md                       # Package reference
+├── SETUP_CHECKLIST.md                    # Setup checklist
+├── SANITY_FILES_INDEX.md                 # Complete file index
+├── FILE_TREE.txt                         # This file
+└── CREATED_FILES_SUMMARY.txt             # Creation summary
+
+
+================================================================================
+SCHEMA ARCHITECTURE
+================================================================================
+
+                      ┌─────────────────────────────────┐
+                      │     Sanity CMS Backend          │
+                      │  (manage.sanity.io)             │
+                      └─────────────────────────────────┘
+                                    ▲
+                                    │
+                          Schema Files (*.ts)
+                                    │
+        ┌───────────────┬───────────┼───────────┬─────────────┐
+        │               │           │           │             │
+        ▼               ▼           ▼           ▼             ▼
+    ┌────────────┐ ┌────────┐ ┌──────────┐ ┌──────────────┐ ┌─────────┐
+    │ blockContent│ │project │ │  post    │ │ navigation   │ │siteSet..│
+    │            │ │        │ │          │ │              │ │         │
+    │ Rich text  │ │Photos  │ │ Journal  │ │ Menu items   │ │Settings │
+    │ & images   │ │Gallery │ │ Essays   │ │ URL paths    │ │Metadata │
+    │            │ │Tags    │ │Category  │ │ External?    │ │Social   │
+    │ Headings   │ │Date    │ │          │ │ Order        │ │SEO      │
+    │ Lists      │ │Feat... │ │          │ │              │ │About    │
+    └────────────┘ └────────┘ └──────────┘ └──────────────┘ └─────────┘
+        Used by:      Array        Array        Singleton      Singleton
+                     docs          docs          (1 per site)  (1 per site)
+                   many projects  many posts
+
+                           │                           │
+                           │                           │
+                    ┌──────────────────┬───────────────┘
+                    │                  │
+                    ▼                  ▼
+            ┌────────────────┐  ┌────────────────┐
+            │   library/     │  │   singleton    │
+            │   queries.ts   │  │   about.ts     │
+            │                │  │                │
+            │  18 GROQ       │  │  Biography     │
+            │  query         │  │  Portrait      │
+            │  functions     │  │  Equipment     │
+            │                │  │  Exhibitions   │
+            └────────────────┘  └────────────────┘
+
+
+================================================================================
+DATA FLOW
+================================================================================
+
+Content Editor
+    │
+    ▼
+Sanity Studio (Web Interface)
+    │
+    ├── Projects        ← Create/edit projects
+    ├── Blog Posts      ← Create/edit posts
+    ├── Navigation      ← Edit menu
+    ├── Site Settings   ← Edit site config
+    └── About Page      ← Edit bio
+    
+    │
+    ▼ (Publish)
+    
+Sanity Backend (Cloud)
+    ├── Documents (JSON)
+    ├── Image Assets
+    └── Version History
+    
+    │
+    ▼ (API)
+    
+Frontend Application
+    │
+    ├── queries.ts      (Fetch data)
+    │   ├── getAllProjects()
+    │   ├── getProjectBySlug()
+    │   ├── getAllPosts()
+    │   ├── getSiteSettings()
+    │   └── getAboutPage()
+    │
+    ├── image.ts        (Optimize images)
+    │   ├── getImageUrl()
+    │   ├── getResponsiveImageUrls()
+    │   └── getThumbnailUrl()
+    │
+    └── Components
+        ├── Project pages
+        ├── Blog pages
+        ├── Navigation
+        └── Homepage
+
+
+================================================================================
+QUERY REFERENCE
+================================================================================
+
+PROJECTS:
+  getAllProjects()          → All projects (optionally filtered by category)
+  getFeaturedProjects()     → Featured projects only
+  getProjectBySlug(slug)    → Single project with full details
+  getProjectSlugs()         → All slugs (for static generation)
+  getProjectCategories()    → Unique category values
+  searchProjectsByTags()    → Filter by tags
+  getProjectStats()         → Count and statistics
+
+POSTS:
+  getAllPosts()             → All posts (optionally filtered by category)
+  getPostBySlug(slug)       → Single post with content
+  getPostSlugs()            → All slugs
+  getRecentPosts(limit)     → Latest N posts
+  getPostCategories()       → Unique category values
+  getPostStats()            → Count and statistics
+
+CONFIGURATION:
+  getNavigation()           → Menu structure
+  getSiteSettings()         → Global settings
+  getAboutPage()            → Biography and exhibitions
+
+IMAGE UTILITIES:
+  getImageUrl(source, opts) → Customized image URL
+  getResponsiveImageUrls()  → Mobile/tablet/desktop URLs
+  getThumbnailUrl()         → Quick thumbnail
+  getHeroImageUrl()         → Hero image optimization
+
+
+================================================================================
+CATEGORY OPTIONS
+================================================================================
+
+Project Categories:
+  • street             (Street photography)
+  • travel             (Travel photography)
+  • landscape          (Landscapes & nature)
+  • portrait           (Portraits)
+  • architecture       (Architecture)
+  • documentary        (Documentary)
+
+Post Categories:
+  • photo-essay        (Photo essays)
+  • travel-notes       (Travel stories)
+  • gear               (Camera & gear)
+  • behind-the-images  (Behind-the-scenes)
+
+Social Platforms:
+  • instagram, twitter, facebook, linkedin
+  • behance, flickr, youtube, tiktok
+
+
+================================================================================
+GETTING STARTED FLOW
+================================================================================
+
+1. INSTALL
+   └─ npm install [dependencies]
+
+2. CONFIGURE
+   └─ Create .env.local with Project ID
+
+3. DEPLOY SCHEMA
+   └─ npm run sanity:build
+
+4. ACCESS STUDIO
+   └─ https://[project-id].sanity.studio
+
+5. CREATE CONTENT
+   ├─ Site Settings (global config)
+   ├─ About Page (biography)
+   ├─ Navigation (menu)
+   ├─ First Project (photography)
+   └─ First Post (blog)
+
+6. BUILD FRONTEND
+   ├─ Import queries
+   ├─ Use types for type-safety
+   ├─ Optimize images
+   └─ Deploy site
+
+
+================================================================================
+FILE ROLES
+================================================================================
+
+SCHEMAS (Define content structure)
+  ├─ blockContent.ts   → Reusable rich text type
+  ├─ project.ts        → Photography project documents
+  ├─ post.ts           → Blog post documents
+  ├─ navigation.ts     → Navigation menu configuration
+  ├─ siteSettings.ts   → Global site settings
+  ├─ about.ts          → Photographer biography
+  └─ index.ts          → Export all schemas
+
+LIBRARY (Utility functions for frontend)
+  ├─ client.ts         → Initialize Sanity client
+  ├─ image.ts          → Image optimization helpers
+  └─ queries.ts        → Pre-built GROQ queries
+
+CONFIGURATION (Setup & typing)
+  ├─ sanity.config.ts  → Studio configuration
+  ├─ types.ts          → TypeScript definitions
+  └─ .env.example      → Environment template
+
+DOCUMENTATION (Guides & references)
+  ├─ README_SANITY.md           → Tech reference
+  ├─ SANITY_SETUP.md            → Setup guide
+  ├─ CMS_QUICK_START.md         → User guide
+  ├─ DEPENDENCIES.md            → Packages
+  ├─ SETUP_CHECKLIST.md         → Setup steps
+  └─ SANITY_FILES_INDEX.md      → File index
+
+
+================================================================================
+PRODUCTION FEATURES
+================================================================================
+
+✓ Full TypeScript support with type definitions
+✓ Comprehensive GROQ queries for all content types
+✓ Image optimization with responsive URLs
+✓ SEO support (meta titles, descriptions)
+✓ Rich text/portable text for formatted content
+✓ Image hotspots for smart mobile cropping
+✓ Content categorization and tagging
+✓ Featured content flags
+✓ Custom display ordering
+✓ Published/draft workflow
+✓ Social media integration
+✓ Multi-image galleries
+✓ Version history
+✓ User permissions & roles
+✓ Webhook support for rebuilds
+

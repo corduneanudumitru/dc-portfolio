@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Root variables */
+:root {
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Inter', sans-serif;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0a0a;
+  color: #e6e3de;
+  font-family: var(--font-sans);
+}
+
+/* Selection color */
+::selection {
+  background-color: #b8a99a;
+  color: #0a0a0a;
+}
+
+::-moz-selection {
+  background-color: #b8a99a;
+  color: #0a0a0a;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #232120;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3834;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-color: #232120 transparent;
+  scrollbar-width: thin;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Image optimization */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Link styles */
+a {
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #b8a99a;
+}
+
+/* Smooth transitions */
+* {
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Prevent scroll jump */
+html {
+  overflow-y: scroll;
+}
+
+/* Focus states for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #b8a99a;
+  outline-offset: 2px;
+}
+
+/* Container queries support */
+@supports (container-type: inline-size) {
+  @container (min-width: 0px) {
+    /* Responsive utilities with container queries can go here */
+  }
+}
