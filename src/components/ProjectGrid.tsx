@@ -63,7 +63,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                   </>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-4xl text-muted/30">\u{1F4F7}</div>
+                    <div className="text-4xl text-muted/30"></div>
                   </div>
                 )}
               </div>
@@ -72,7 +72,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
               </h3>
               {(project.category || project.location) && (
                 <p className="text-sm text-muted">
-                  {[project.category, project.location].filter(Boolean).join(' \u{2014} ')}
+                  {[project.category, project.location].filter(Boolean).join('  -  ')}
                 </p>
               )}
             </Link>
