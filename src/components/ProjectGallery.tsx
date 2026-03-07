@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/client';
 import Lightbox from '@/components/Lightbox';
 
@@ -28,40 +27,29 @@ export default function ProjectGallery({ images }: { images: ProjectGalleryImage
 
   return (
     <>
-      <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        <div className="space-y-8 sm:space-y-12 lg:space-y-16">
+      <div className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-6">
           {images.map((image, index) => {
             const hasError = imageErrors.has(index.toString());
             const imageUrl = image.asset && !hasError
-              ? urlFor(image.asset).width(1200).height(800).url()
+              ? urlFor(image.asset).width(800).auto('format').url()
               : null;
+
+            if (!imageUrl) return null;
 
             return (
               <div
                 key={index}
-                className="cursor-pointer"
+                className="mb-4 sm:mb-6 break-inside-avoid cursor-pointer group"
                 onClick={() => openLightbox(index)}
               >
-                <div className="relative w-full aspect-video bg-surface border border-border overflow-hidden hover:opacity-90 transition-opacity">
-                  {imageUrl ? (
-                    <Image
-                      src={imageUrl}
-                      alt={image.alt || `Gallery image ${index + 1}`}
-                      fill
-                      className="object-cover"
-                      onError={() => handleImageError(index)}
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-surface/50">
-                      <div className="text-center">
-                        <p className="text-sm text-muted/50">Image not available</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                {image.alt && (
-                  <p className="text-xs sm:text-sm text-muted mt-3 italic">{image.alt}</p>
-                )}
+                <img
+                  src={imageUrl}
+                  alt={image.alt || 'Gallery image ' + (index + 1)}
+                  className="w-full h-auto block group-hover:opacity-90 transition-opacity duration-300"
+                  onError={() => handleImageError(index)}
+                  loading="lazy"
+                />
               </div>
             );
           })}
