@@ -40,7 +40,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
         {projects.map((project) => {
           const hasImage = project.coverImage && !imageErrors.has(project._id);
           const imageUrl = hasImage
-            ? urlFor(project.coverImage).width(800).height(1000).fit('crop').url()
+            ? urlFor(project.coverImage).width(800).auto('format').url()
             : null;
 
           return (

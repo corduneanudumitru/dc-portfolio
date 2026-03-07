@@ -46,7 +46,7 @@ export default function ProjectGallery({ images }: { images: ProjectGalleryImage
                 <img
                   src={imageUrl}
                   alt={image.alt || 'Gallery image ' + (index + 1)}
-                  className="w-full h-auto block group-hover:opacity-90 transition-opacity duration-300"
+                  className="w-full h-auto block cursor-pointer group-hover:opacity-90 transition-opacity duration-300"
                   onError={() => handleImageError(index)}
                   loading="lazy"
                 />

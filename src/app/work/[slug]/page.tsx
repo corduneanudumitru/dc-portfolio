@@ -56,18 +56,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </Link>
       </div>
 
-      {project.coverImage && (
-        <div className="relative w-full aspect-video sm:aspect-auto sm:h-screen">
-          <Image
-            src={urlFor(project.coverImage).width(1920).height(1080).url()}
-            alt={project.title}
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-      )}
-
       <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 border-b border-border">
         <div className="max-w-4xl">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-text mb-6">
