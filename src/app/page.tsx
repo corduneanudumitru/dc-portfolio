@@ -14,7 +14,7 @@ async function HeroSection() {
     : null;
 
   return (
-    <section className="relative w-full h-screen flex items-center justify-center overflow-hidden pt-20 sm:pt-24">
+    <section className="relative w-full h-screen flex items-end justify-start overflow-hidden">
       {/* Background image */}
       {heroImageUrl ? (
         <Image
@@ -32,17 +32,17 @@ async function HeroSection() {
       <div className="absolute inset-0 bg-black/40" />
 
       {/* Content */}
-      <div className="relative z-10 text-center px-4 sm:px-8">
+      <div className="relative z-10 text-left px-6 sm:px-12 lg:px-16 pb-24 sm:pb-32">
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-text mb-4 sm:mb-6 leading-tight">
           {settings?.siteName || 'DC'}
         </h1>
-        <p className="text-lg sm:text-2xl text-text/80 font-light max-w-2xl mx-auto mb-8 sm:mb-12">
+        <p className="text-lg sm:text-2xl text-text/80 font-light max-w-2xl mb-8 sm:mb-12">
           {settings?.tagline ||
             'Capturing moments that tell stories of light, emotion, and human connection'}
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
           <Link
             href="/#work"
             className="px-8 py-3 border border-text text-text text-sm sm:text-base font-medium hover:bg-text hover:text-bg transition-colors"
