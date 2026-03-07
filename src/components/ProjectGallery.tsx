@@ -28,7 +28,7 @@ export default function ProjectGallery({ images }: { images: ProjectGalleryImage
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {images.map((image, index) => {
             const hasError = imageErrors.has(index.toString());
             const imageUrl = image.asset && !hasError
@@ -40,13 +40,13 @@ export default function ProjectGallery({ images }: { images: ProjectGalleryImage
             return (
               <div
                 key={index}
-                className="mb-4 sm:mb-6 break-inside-avoid cursor-pointer group"
+                className="cursor-pointer group overflow-hidden"
                 onClick={() => openLightbox(index)}
               >
                 <img
                   src={imageUrl}
                   alt={image.alt || 'Gallery image ' + (index + 1)}
-                  className="w-full h-auto block cursor-pointer group-hover:opacity-90 transition-opacity duration-300"
+                  className="w-full h-auto block group-hover:scale-[1.03] group-hover:opacity-90 transition-all duration-300"
                   onError={() => handleImageError(index)}
                   loading="lazy"
                 />
