@@ -34,7 +34,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-      <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-5 lg:gap-6">
+      <div className="columns-1 sm:columns-2 lg:columns-3 gap-3 sm:gap-4">
         {projects.map((project) => {
           const hasImage = project.coverImage && !imageErrors.has(project._id);
           const imageUrl = hasImage
@@ -45,7 +45,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
             <Link
               key={project._id}
               href={`/work/${project.slug.current}`}
-              className="block mb-4 sm:mb-5 lg:mb-6 break-inside-avoid group relative overflow-hidden bg-surface border border-border hover:border-accent/40 transition-colors duration-300"
+              className="block mb-3 sm:mb-4 break-inside-avoid group relative overflow-hidden cursor-pointer"
             >
               {hasImage && imageUrl ? (
                 <div className="relative">
@@ -56,41 +56,28 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                     onError={() => handleImageError(project._id)}
                     loading="lazy"
                   />
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300" />
-
-                  {/* Title overlay on hover (desktop) */}
-                  <div className="absolute inset-0 hidden sm:flex flex-col justify-end p-5 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <h3 className="text-lg font-serif font-bold text-text mb-1">
-                      {project.title}
-                    </h3>
-                    {project.category && (
-                      <p className="text-xs text-accent uppercase tracking-wider font-medium">
-                        {project.category}
-                      </p>
-                    )}
+                  {/* Dark overlay on hover with title */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex flex-col justify-end p-4 sm:p-5">
+                    <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                      <h3 className="text-base sm:text-lg font-serif font-bold text-white mb-1">
+                        {project.title}
+                      </h3>
+                      {project.category && (
+                        <p className="text-xs text-accent uppercase tracking-wider font-medium">
+                          {project.category}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               ) : (
-                <div className="w-full aspect-[4/3] bg-surface/50 flex items-center justify-center">
+                <div className="w-full aspect-[4/3] bg-surface flex items-center justify-center border border-border">
                   <div className="text-center">
                     <div className="text-4xl text-muted/30 mb-2">📸</div>
                     <p className="text-xs text-muted/50">No image</p>
                   </div>
                 </div>
               )}
-
-              {/* Title bar below image (always visible on mobile, visible on desktop too) */}
-              <div className="p-3 sm:p-4 bg-surface border-t border-border/50">
-                <h3 className="text-sm sm:text-base font-serif font-semibold text-text">
-                  {project.title}
-                </h3>
-                {project.category && (
-                  <p className="text-xs text-accent uppercase tracking-wider mt-1">
-                    {project.category}
-                  </p>
-                )}
-              </div>
             </Link>
           );
         })}
