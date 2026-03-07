@@ -99,7 +99,7 @@ async function WorkSection() {
 
       <div className="px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 text-center">
         <Link
-          href="/#all-work"
+          href="/work"
           className="inline-block px-8 py-3 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
         >
           View All Projects
@@ -175,26 +175,7 @@ async function AboutTeaser() {
   );
 }
 
-async function CtaBand() {
-  return (
-    <section className="py-20 sm:py-32 lg:py-40 border-t border-border bg-surface">
-      <div className="px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-text mb-6">
-          Let's Create Together
-        </h2>
-        <p className="text-base sm:text-lg text-muted mb-8 max-w-2xl mx-auto">
-          Interested in collaborating or discussing your project? I'd love to hear from you.
-        </p>
-        <Link
-          href="/contact"
-          className="inline-block px-10 py-4 bg-accent text-bg text-base font-medium hover:bg-accent/90 transition-colors"
-        >
-          Start a Conversation
-        </Link>
-      </div>
-    </section>
-  );
-}
+
 
 export default async function HomePage() {
   return (
@@ -203,7 +184,7 @@ export default async function HomePage() {
       <WorkSection />
       <JournalSection />
       <AboutTeaser />
-      <CtaBand />
+      
     </>
   );
 }
