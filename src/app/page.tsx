@@ -14,7 +14,7 @@ async function HeroSection() {
     : null;
 
   return (
-    <section className="relative w-full h-screen flex items-end justify-start overflow-hidden">
+    <section className="relative w-full h-screen flex items-center justify-center overflow-hidden pt-20 sm:pt-24">
       {/* Background image */}
       {heroImageUrl ? (
         <Image
@@ -32,26 +32,27 @@ async function HeroSection() {
       <div className="absolute inset-0 bg-black/40" />
 
       {/* Content */}
-      <div className="relative z-10 text-left px-6 sm:px-12 lg:px-16 pb-24 sm:pb-32">
+      <div className="relative z-10 text-center px-4 sm:px-8">
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-text mb-4 sm:mb-6 leading-tight">
           {settings?.siteName || 'DC'}
         </h1>
-        <p className="text-lg sm:text-2xl text-text/80 font-light max-w-2xl mb-8 sm:mb-12">
+        <div className="w-12 h-0.5 bg-accent mx-auto mb-4 sm:mb-6" />
+        <p className="text-lg sm:text-2xl text-text/80 font-light max-w-2xl mx-auto mb-8 sm:mb-12">
           {settings?.tagline ||
             'Capturing moments that tell stories of light, emotion, and human connection'}
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
           <Link
-            href="/#work"
-            className="px-8 py-3 border border-text text-text text-sm sm:text-base font-medium hover:bg-text hover:text-bg transition-colors"
+            href="/work"
+            className="px-8 py-3 bg-accent text-bg text-sm sm:text-base font-medium hover:bg-accent/80 transition-colors"
           >
             Explore Work
           </Link>
           <Link
             href="/contact"
-            className="px-8 py-3 bg-accent text-bg text-sm sm:text-base font-medium hover:bg-accent/90 transition-colors"
+            className="px-8 py-3 border border-text/50 text-text text-sm sm:text-base font-medium hover:border-accent hover:text-accent transition-colors"
           >
             Get in Touch
           </Link>
@@ -61,7 +62,7 @@ async function HeroSection() {
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
         <svg
-          className="w-6 h-6 text-text"
+          className="w-6 h-6 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -84,6 +85,7 @@ async function WorkSection() {
   return (
     <section id="work" className="py-20 sm:py-32 lg:py-40">
       <div className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
+        <div className="w-10 h-0.5 bg-accent mb-6" />
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-text mb-4">
           Featured Work
         </h2>
@@ -100,7 +102,7 @@ async function WorkSection() {
       <div className="px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 text-center">
         <Link
           href="/work"
-          className="inline-block px-8 py-3 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
+          className="inline-block px-8 py-3 bg-accent/10 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
         >
           View All Projects
         </Link>
@@ -115,6 +117,7 @@ async function JournalSection() {
   return (
     <section className="py-20 sm:py-32 lg:py-40 border-t border-border">
       <div className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
+        <div className="w-10 h-0.5 bg-cool mb-6" />
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-text mb-4">
           Journal
         </h2>
@@ -130,7 +133,7 @@ async function JournalSection() {
       <div className="px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 text-center">
         <Link
           href="/journal"
-          className="inline-block px-8 py-3 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
+          className="inline-block px-8 py-3 bg-cool/10 border border-cool text-cool text-sm font-medium hover:bg-cool hover:text-bg transition-colors"
         >
           Read All Posts
         </Link>
@@ -151,6 +154,7 @@ async function AboutTeaser() {
 
           {/* Content */}
           <div>
+            <div className="w-10 h-0.5 bg-accent mb-6" />
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-text mb-6">
               About
             </h2>
@@ -164,7 +168,7 @@ async function AboutTeaser() {
             </p>
             <Link
               href="/about"
-              className="inline-block px-8 py-3 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
+              className="inline-block px-8 py-3 bg-accent/10 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
             >
               Learn More
             </Link>
@@ -175,8 +179,6 @@ async function AboutTeaser() {
   );
 }
 
-
-
 export default async function HomePage() {
   return (
     <>
@@ -184,7 +186,6 @@ export default async function HomePage() {
       <WorkSection />
       <JournalSection />
       <AboutTeaser />
-      
     </>
   );
 }
