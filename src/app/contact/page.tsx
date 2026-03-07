@@ -48,7 +48,7 @@ export default function ContactPage() {
       if (response.ok) {
         setStatus({
           type: 'success',
-          message: 'Thank you for your message! I'll get back to you soon.',
+          message: 'Thank you for your message! I will get back to you soon.',
         });
         setFormData({ name: '', email: '', message: '' });
         // Reset success message after 5 seconds

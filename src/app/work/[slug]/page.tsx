@@ -73,7 +73,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-text mb-6">
             {project.title}
           </h1>
-
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm">
             {project.category && (
               <div>
@@ -100,7 +99,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               </div>
             )}
           </div>
-
           {project.tags && project.tags.length > 0 && (
             <div className="mt-8">
               <div className="flex flex-wrap gap-2">
@@ -115,5 +113,36 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </div>
       </div>
 
-      <ProjectGallery images={gallery
-head -3 ~/Desktop/dc-portfolio/src/app/work/\[slug\]/page.tsx
+      <ProjectGallery images={galleryImages} />
+
+      {project.body && (
+        <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 border-t border-border">
+          <div className="max-w-3xl mx-auto">
+            <PortableTextRenderer blocks={project.body} />
+          </div>
+        </div>
+      )}
+
+      <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 border-t border-border">
+        <Link
+          href="/#work"
+          className="inline-block px-8 py-3 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
+        >
+          Back to All Projects
+        </Link>
+      </div>
+    </main>
+  );
+}
+
+export async function generateStaticParams() {
+  try {
+    const slugs = await getProjectSlugs();
+    return slugs.map((item: any) => ({
+      slug: item.slug.current,
+    }));
+  } catch (error) {
+    console.error('Failed to generate static params:', error);
+    return [];
+  }
+}

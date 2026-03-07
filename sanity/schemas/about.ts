@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity';
+import { defineField, defineType, defineArrayMember } from 'sanity';
 
 export default defineType({
   name: 'about',
@@ -10,9 +10,7 @@ export default defineType({
       title: 'Portrait Image',
       type: 'image',
       description: 'Your portrait or professional photo',
-      options: {
-        hotspot: true,
-      },
+      options: { hotspot: true },
       fields: [
         defineField({
           name: 'alt',
@@ -26,7 +24,7 @@ export default defineType({
       name: 'title',
       title: 'Page Title',
       type: 'string',
-      description: 'Title for the about page (e.g., "About Me")',
+      description: 'Title for the about page',
       validation: (Rule) => Rule.required().max(100),
     }),
     defineField({
@@ -49,17 +47,15 @@ export default defineType({
       title: 'Equipment',
       type: 'array',
       of: [{ type: 'string' }],
-      options: {
-        layout: 'tags',
-      },
-      description: 'Photography equipment you use (cameras, lenses, etc.)',
+      options: { layout: 'tags' },
+      description: 'Photography equipment you use',
     }),
     defineField({
       name: 'exhibitions',
       title: 'Exhibitions & Shows',
       type: 'array',
       of: [
-        defineType({
+        defineArrayMember({
           name: 'exhibition',
           title: 'Exhibition',
           type: 'object',
@@ -68,49 +64,35 @@ export default defineType({
               name: 'title',
               title: 'Exhibition Title',
               type: 'string',
-              description: 'Name of the exhibition or show',
               validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: 'venue',
               title: 'Venue',
               type: 'string',
-              description: 'Where the exhibition took place',
               validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: 'year',
               title: 'Year',
               type: 'number',
-              description: 'Year of the exhibition',
               validation: (Rule) => Rule.required().min(1900).max(2100),
             }),
           ],
           preview: {
-            select: {
-              title: 'title',
-              venue: 'venue',
-              year: 'year',
-            },
+            select: { title: 'title', venue: 'venue', year: 'year' },
             prepare(selection) {
               const { title, venue, year } = selection;
-              return {
-                title,
-                subtitle: `${venue} • ${year}`,
-              };
+              return { title, subtitle: venue + ' - ' + year };
             },
           },
         }),
       ],
-      description: 'Add exhibitions and shows you have participated in',
     }),
   ],
   preview: {
     prepare() {
-      return {
-        title: 'About Page',
-        subtitle: 'Photographer biography and background',
-      };
+      return { title: 'About Page', subtitle: 'Photographer biography' };
     },
   },
 });
