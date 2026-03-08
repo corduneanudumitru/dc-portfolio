@@ -49,7 +49,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     : null;
 
   return (
-    <main className="pt-20 sm:pt-24">
+    <div className="pt-20 sm:pt-24">
       <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <Link href="/work" className="text-sm text-accent hover:text-accent/80 transition-colors">
           Back to Work
@@ -119,6 +119,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           Back to All Projects
         </Link>
       </div>
-    </main>
+    </div>
   );
 }

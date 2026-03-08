@@ -19,7 +19,7 @@ export default async function WorkPage() {
   )] as string[];
 
   return (
-    <main className="min-h-screen pt-24">
+    <div className="min-h-screen pt-24">
       <div className="px-4 sm:px-6 lg:px-8 mb-4">
         <div className="w-10 h-0.5 bg-accent mb-6" />
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-text mb-4">
@@ -34,6 +34,6 @@ export default async function WorkPage() {
         projects={allProjects}
         categories={categories}
       />
-    </main>
+    </div>
   );
 }
