@@ -47,35 +47,21 @@ export default defineType({
       type: 'array',
       of: [
         {
-          type: 'object',
+          type: 'image',
           title: 'Gallery Image',
+          options: {
+            hotspot: true,
+          },
           fields: [
             defineField({
-              name: 'image',
-              title: 'Image',
-              type: 'image',
-              options: {
-                hotspot: true,
-              },
-              fields: [
-                defineField({
-                  name: 'alt',
-                  title: 'Alt Text',
-                  type: 'string',
-                }),
-              ],
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: 'caption',
-              title: 'Image Caption',
-              type: 'text',
-              rows: 2,
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'string',
             }),
           ],
         },
       ],
-      description: 'Images that belong to this project',
+      description: 'Images that belong to this project — drag to reorder, click ••• to delete',
     }),
     defineField({
       name: 'category',
