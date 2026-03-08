@@ -1,8 +1,5 @@
-import { getAllProjects, getProjectCategories } from '@/sanity/lib/queries';
+import { getAllProjects } from '@/sanity/lib/queries';
 import WorkPageClient from '@/components/WorkPageClient';
-
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 export const metadata = {
   title: 'Work | Dumitru Corduneanu Photography',
@@ -10,12 +7,15 @@ export const metadata = {
 };
 
 export default async function WorkPage() {
-  const [projects, categories] = await Promise.all([
-    getAllProjects(),
-    getProjectCategories(),
-  ]);
+  const projects = await getAllProjects();
+  const allProjects = projects || [];
 
-  const validCategories = (categories || []).filter((c: any) => c && typeof c === 'string');
+  // Extract unique categories from the projects themselves
+  const categories = [...new Set(
+    allProjects
+      .map((p: any) => p.category)
+      .filter((c: any) => c && typeof c === 'string')
+  )] as string[];
 
   return (
     <main className="min-h-screen pt-24">
@@ -30,8 +30,8 @@ export default async function WorkPage() {
       </div>
 
       <WorkPageClient
-        projects={projects || []}
-        categories={validCategories}
+        projects={allProjects}
+        categories={categories}
       />
     </main>
   );
