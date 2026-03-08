@@ -1,6 +1,9 @@
 import { getAllProjects, getProjectCategories } from '@/sanity/lib/queries';
 import WorkPageClient from '@/components/WorkPageClient';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata = {
   title: 'Work | Dumitru Corduneanu Photography',
   description: 'Travel and documentary photography projects from around the world.',
