@@ -76,35 +76,40 @@ export default function ProjectGallery({ images }: { images: ProjectGalleryImage
     if (images.length === 0) return;
 
     let loadedCount = 0;
-    const infos: (ImageInfo | null)[] = new Array(images.length).fill(null);
+    const infos: ImageInfo[] = [];
+
+    const checkDone = () => {
+      loadedCount++;
+      if (loadedCount >= images.length) {
+        infos.sort((a, b) => a.index - b.index);
+        setImageInfos([...infos]);
+      }
+    };
 
     images.forEach((image, index) => {
       if (!image.asset) {
-        loadedCount++;
-        if (loadedCount >= images.length) {
-          setImageInfos(infos.filter(Boolean) as ImageInfo[]);
-        }
+        checkDone();
         return;
       }
 
+      const fullUrl = urlFor(image.asset).width(800).auto('format').url();
       const img = new window.Image();
       img.onload = () => {
         const aspect = img.naturalWidth / img.naturalHeight;
-        infos[index] = {
+        infos.push({
           index,
-          url: urlFor(image.asset).width(800).auto('format').url(),
+          url: fullUrl,
           aspect: aspect || 1,
-        };
-        loadedCount++;
-        if (loadedCount >= images.length) {
-          setImageInfos(infos.filter(Boolean) as ImageInfo[]);
-        }
+        });
+        checkDone();
       };
       img.onerror = () => {
-        loadedCount++;
-        if (loadedCount >= images.length) {
-          setImageInfos(infos.filter(Boolean) as ImageInfo[]);
-        }
+        infos.push({
+          index,
+          url: fullUrl,
+          aspect: 1.5,
+        });
+        checkDone();
       };
       img.src = urlFor(image.asset).width(80).auto('format').url();
     });

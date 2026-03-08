@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getProjectBySlug } from '@/sanity/lib/queries';
-import ProjectGallery from '@/components/ProjectGallery';
 import PortableTextRenderer from '@/components/PortableTextRenderer';
+import ProjectGallery from '@/components/ProjectGallery';
 import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';

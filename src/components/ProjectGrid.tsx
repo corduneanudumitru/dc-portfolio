@@ -73,49 +73,45 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
     setImageErrors((prev) => new Set([...prev, projectId]));
   };
 
-  if (!projects || projects.length === 0) {
-    return (
-      <div className="px-4 sm:px-6 lg:px-8 py-20">
-        <p className="text-center text-muted text-lg">
-          No projects to display yet. Check back soon.
-        </p>
-      </div>
-    );
-  }
-
   useEffect(() => {
-    let loadedCount = 0;
-    const infos: (ProjectInfo | null)[] = new Array(projects.length).fill(null);
+    if (!projects || projects.length === 0) return;
 
-    projects.forEach((project, index) => {
+    let loadedCount = 0;
+    const infos: ProjectInfo[] = [];
+
+    const checkDone = () => {
+      loadedCount++;
+      if (loadedCount >= projects.length) {
+        infos.sort((a, b) => {
+          const aIdx = projects.indexOf(a.project);
+          const bIdx = projects.indexOf(b.project);
+          return aIdx - bIdx;
+        });
+        setProjectInfos([...infos]);
+      }
+    };
+
+    projects.forEach((project) => {
       if (!project.coverImage) {
-        infos[index] = { project, url: '', aspect: 1 };
-        loadedCount++;
-        if (loadedCount >= projects.length) {
-          setProjectInfos(infos.filter(Boolean) as ProjectInfo[]);
-        }
+        infos.push({ project, url: '', aspect: 1 });
+        checkDone();
         return;
       }
 
+      const fullUrl = urlFor(project.coverImage).width(800).auto('format').url();
       const img = new window.Image();
       img.onload = () => {
         const aspect = img.naturalWidth / img.naturalHeight;
-        infos[index] = {
+        infos.push({
           project,
-          url: urlFor(project.coverImage).width(800).auto('format').url(),
+          url: fullUrl,
           aspect: aspect || 1,
-        };
-        loadedCount++;
-        if (loadedCount >= projects.length) {
-          setProjectInfos(infos.filter(Boolean) as ProjectInfo[]);
-        }
+        });
+        checkDone();
       };
       img.onerror = () => {
-        infos[index] = { project, url: '', aspect: 1 };
-        loadedCount++;
-        if (loadedCount >= projects.length) {
-          setProjectInfos(infos.filter(Boolean) as ProjectInfo[]);
-        }
+        infos.push({ project, url: fullUrl, aspect: 1 });
+        checkDone();
       };
       img.src = urlFor(project.coverImage).width(80).auto('format').url();
     });
@@ -134,6 +130,16 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [layoutRows]);
+
+  if (!projects || projects.length === 0) {
+    return (
+      <div className="px-4 sm:px-6 lg:px-8 py-20">
+        <p className="text-center text-muted text-lg">
+          No projects to display yet. Check back soon.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20" ref={containerRef}>
