@@ -27,7 +27,7 @@ export default function Navigation() {
         } else {
           // Fallback navigation
           setNavItems([
-            { label: 'Work', href: '#work' },
+            { label: 'Work', href: '/work' },
             { label: 'Journal', href: '/journal' },
             { label: 'About', href: '/about' },
           ]);
@@ -36,7 +36,7 @@ export default function Navigation() {
         console.error('Failed to fetch navigation:', error);
         // Fallback navigation
         setNavItems([
-          { label: 'Work', href: '#work' },
+          { label: 'Work', href: '/work' },
           { label: 'Journal', href: '/journal' },
           { label: 'About', href: '/about' },
         ]);
