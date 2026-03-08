@@ -1,6 +1,8 @@
 import { getAllProjects } from '@/sanity/lib/queries';
 import WorkPageClient from '@/components/WorkPageClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Work | Dumitru Corduneanu Photography',
   description: 'Travel and documentary photography projects from around the world.',
@@ -10,7 +12,6 @@ export default async function WorkPage() {
   const projects = await getAllProjects();
   const allProjects = projects || [];
 
-  // Extract unique categories from the projects themselves
   const categories = [...new Set(
     allProjects
       .map((p: any) => p.category)
