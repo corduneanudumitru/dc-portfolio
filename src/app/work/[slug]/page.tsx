@@ -1,10 +1,10 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import { getProjectBySlug, getProjectSlugs } from '@/sanity/lib/queries';
-import { urlFor } from '@/sanity/lib/client';
-import PortableTextRenderer from '@/components/PortableTextRenderer';
+import { getProjectBySlug } from '@/sanity/lib/queries';
 import ProjectGallery from '@/components/ProjectGallery';
+import PortableTextRenderer from '@/components/PortableTextRenderer';
 import { notFound } from 'next/navigation';
+
+export const dynamic = 'force-dynamic';
 
 interface ProjectGalleryImage {
   asset?: any;
@@ -51,7 +51,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   return (
     <main className="pt-20 sm:pt-24">
       <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <Link href="/#work" className="text-sm text-accent hover:text-accent/80 transition-colors">
+        <Link href="/work" className="text-sm text-accent hover:text-accent/80 transition-colors">
           Back to Work
         </Link>
       </div>
@@ -113,7 +113,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
       <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 border-t border-border">
         <Link
-          href="/#work"
+          href="/work"
           className="inline-block px-8 py-3 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
         >
           Back to All Projects
@@ -121,16 +121,4 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       </div>
     </main>
   );
-}
-
-export async function generateStaticParams() {
-  try {
-    const slugs = await getProjectSlugs();
-    return slugs.map((item: any) => ({
-      slug: item.slug.current,
-    }));
-  } catch (error) {
-    console.error('Failed to generate static params:', error);
-    return [];
-  }
 }
