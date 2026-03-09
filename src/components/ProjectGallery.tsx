@@ -92,7 +92,7 @@ export default function ProjectGallery({ images }: { images: ProjectGalleryImage
         return;
       }
 
-      const fullUrl = urlFor(image.asset).width(800).auto('format').url();
+      const fullUrl = urlFor(image.asset).width(1600).quality(85).auto('format').url();
       const img = new window.Image();
       img.onload = () => {
         const aspect = img.naturalWidth / img.naturalHeight;
