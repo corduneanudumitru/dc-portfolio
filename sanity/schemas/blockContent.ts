@@ -63,7 +63,6 @@ export default defineType({
           title: 'Alt Text',
           type: 'string',
           description: 'Important for SEO and accessibility',
-          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: 'caption',

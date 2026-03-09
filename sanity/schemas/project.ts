@@ -77,7 +77,6 @@ export default defineType({
           { title: 'Documentary', value: 'documentary' },
         ],
       },
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'tags',
