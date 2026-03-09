@@ -10,7 +10,7 @@ import { urlFor } from '@/sanity/lib/client';
 async function HeroSection() {
   const settings = await getSiteSettings();
   const heroImageUrl = settings?.heroImage
-    ? urlFor(settings.heroImage).width(1920).height(1080).url()
+    ? urlFor(settings.heroImage).width(2560).quality(90).auto('format').url()
     : null;
 
   return (
