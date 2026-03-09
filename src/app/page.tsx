@@ -10,7 +10,7 @@ import { urlFor } from '@/sanity/lib/client';
 async function HeroSection() {
   const settings = await getSiteSettings();
   const heroImageUrl = settings?.heroImage
-    ? urlFor(settings.heroImage).width(2560).quality(90).auto('format').url()
+    ? urlFor(settings.heroImage).width(2560).height(1440).fit('crop').quality(90).auto('format').url()
     : null;
 
   return (
@@ -21,7 +21,7 @@ async function HeroSection() {
           src={heroImageUrl}
           alt="Hero"
           fill
-          className="object-cover"
+          className="object-cover scale-110"
           priority
         />
       ) : (
