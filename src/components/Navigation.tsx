@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { getNavigation } from '@/sanity/lib/queries';
 
@@ -16,6 +17,8 @@ export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [navItems, setNavItems] = useState<NavItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const pathname = usePathname();
+  const isHomepage = pathname === '/';
 
   // Fetch navigation from Sanity
   useEffect(() => {
@@ -71,10 +74,12 @@ export default function Navigation() {
     >
       <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo — hidden on homepage hero (hero has its own branding), visible elsewhere */}
           <Link
             href="/"
-            className="text-2xl sm:text-3xl font-serif font-bold hover:text-accent"
+            className={`text-2xl sm:text-3xl font-serif font-bold hover:text-accent transition-opacity duration-300 ${
+              isHomepage && !isScrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            }`}
           >
             DC
           </Link>

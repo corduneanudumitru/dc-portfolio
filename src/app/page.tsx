@@ -31,32 +31,30 @@ async function HeroSection() {
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/40" />
 
-      {/* Content */}
-      <div className="relative z-10 text-center px-4 sm:px-8">
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-text mb-4 sm:mb-6 leading-tight">
-          {settings?.siteName || 'DC'}
+      {/* Content — top left, same line as nav */}
+      <div className="absolute top-4 sm:top-6 left-4 sm:left-6 lg:left-8 z-10">
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-text leading-tight">
+          DC <span className="tracking-wide">{settings?.siteName || 'Sardanapal Photography'}</span>
         </h1>
-        <div className="w-12 h-0.5 bg-accent mx-auto mb-4 sm:mb-6" />
-        <p className="text-lg sm:text-2xl text-text/80 font-light max-w-2xl mx-auto mb-8 sm:mb-12">
-          {settings?.tagline ||
-            'Capturing moments that tell stories of light, emotion, and human connection'}
+        <p className="text-xs sm:text-sm text-text/70 font-light mt-1 tracking-widest uppercase">
+          {settings?.tagline || 'wandering is life'}
         </p>
+      </div>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
-          <Link
-            href="/work"
-            className="px-8 py-3 bg-accent text-bg text-sm sm:text-base font-medium hover:bg-accent/80 transition-colors"
-          >
-            Explore Work
-          </Link>
-          <Link
-            href="/contact"
-            className="px-8 py-3 border border-text/50 text-text text-sm sm:text-base font-medium hover:border-accent hover:text-accent transition-colors"
-          >
-            Get in Touch
-          </Link>
-        </div>
+      {/* CTA Buttons — bottom left */}
+      <div className="absolute bottom-16 sm:bottom-20 left-4 sm:left-6 lg:left-8 z-10 flex gap-4 sm:gap-6">
+        <Link
+          href="/work"
+          className="px-8 py-3 bg-accent text-bg text-sm font-medium hover:bg-accent/80 transition-colors"
+        >
+          Explore Work
+        </Link>
+        <Link
+          href="/contact"
+          className="px-8 py-3 border border-text/50 text-text text-sm font-medium hover:border-accent hover:text-accent transition-colors"
+        >
+          Get in Touch
+        </Link>
       </div>
 
       {/* Scroll indicator */}
