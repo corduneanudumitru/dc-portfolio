@@ -10,7 +10,7 @@ export default defineType({
       title: 'Project Title',
       type: 'string',
       description: 'The title of the photography project',
-      validation: (Rule) => Rule.required().max(200),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
@@ -20,7 +20,7 @@ export default defineType({
         source: 'title',
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required().unique(),
+      validation: (Rule) => Rule.required(),
       description: 'URL-friendly version of the title (auto-generated)',
     }),
     defineField({
@@ -39,7 +39,6 @@ export default defineType({
           description: 'Alternative text for accessibility',
         }),
       ],
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'gallery',
@@ -94,7 +93,6 @@ export default defineType({
       type: 'text',
       rows: 3,
       description: 'Brief overview of the project (used in listings)',
-      validation: (Rule) => Rule.max(500),
     }),
     defineField({
       name: 'body',
