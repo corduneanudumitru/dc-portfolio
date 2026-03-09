@@ -58,7 +58,7 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
       const img = images[idx];
       if (img?.asset) {
         const preload = new Image();
-        preload.src = urlFor(img.asset).width(2400).quality(90).auto('format').url();
+        preload.src = urlFor(img.asset).width(4000).quality(95).auto('format').url();
       }
     });
   }, [currentIndex, isOpen, images]);
@@ -82,7 +82,7 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
   const currentImage = images[currentIndex];
   // No forced height - let image keep natural aspect ratio
   const imageUrl = currentImage?.asset
-    ? urlFor(currentImage.asset).width(2400).quality(90).auto('format').url()
+    ? urlFor(currentImage.asset).width(4000).quality(95).auto('format').url()
     : null;
 
   return (

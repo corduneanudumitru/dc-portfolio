@@ -98,7 +98,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
         return;
       }
 
-      const fullUrl = urlFor(project.coverImage).width(1600).quality(85).auto('format').url();
+      const fullUrl = urlFor(project.coverImage).width(2400).quality(90).auto('format').url();
       const img = new window.Image();
       img.onload = () => {
         const aspect = img.naturalWidth / img.naturalHeight;
