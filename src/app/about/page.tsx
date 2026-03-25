@@ -54,7 +54,7 @@ export default function AboutPage() {
   }
 
   const portraitUrl = aboutData.portrait
-    ? urlFor(aboutData.portrait).width(600).height(800).url()
+    ? urlFor(aboutData.portrait).width(1200).url()
     : null;
 
   return (
@@ -70,13 +70,14 @@ export default function AboutPage() {
       <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-16 lg:gap-20 items-start">
           {/* Portrait */}
-          <div className="relative w-full aspect-square bg-surface border border-border overflow-hidden">
+          <div className="relative w-full bg-surface border border-border overflow-hidden">
             {portraitUrl ? (
               <Image
                 src={portraitUrl}
-                alt="Portrait"
-                fill
-                className="object-cover"
+                alt="Dumitru Corduneanu"
+                width={1200}
+                height={800}
+                className="w-full h-auto"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
