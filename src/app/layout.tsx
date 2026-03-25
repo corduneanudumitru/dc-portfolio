@@ -4,7 +4,6 @@ import './globals.css';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { LocaleProvider } from '@/i18n/LocaleContext';
-import { LocaleProvider } from '@/i18n/LocaleContext';
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-serif',
@@ -55,11 +54,9 @@ export default function RootLayout({
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
       <body className="bg-bg text-text font-sans antialiased">
         <LocaleProvider>
-          <LocaleProvider>
           <Navigation />
-        <main>{children}</main>
-        <Footer />
-        </LocaleProvider>
+          <main>{children}</main>
+          <Footer />
         </LocaleProvider>
       </body>
     </html>
