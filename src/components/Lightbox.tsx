@@ -58,19 +58,34 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
       const img = images[idx];
       if (img?.asset) {
         const preload = new Image();
-        preload.src = urlFor(img.asset).width(4000).quality(95).auto('format').url();
+        preload.src = urlFor(img.asset).width(1600).auto('format').url();
       }
     });
   }, [currentIndex, isOpen, images]);
 
-  // Touch swipe
+  // Touch swipe (single finger only — ignore pinch-to-zoom)
   const [touchStart, setTouchStart] = useState(0);
+  const [isSingleTouch, setIsSingleTouch] = useState(true);
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
+    if (e.targetTouches.length === 1) {
+      setIsSingleTouch(true);
+      setTouchStart(e.targetTouches[0].clientX);
+    } else {
+      setIsSingleTouch(false);
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    // If a second finger touches during the gesture, mark as multi-touch
+    if (e.targetTouches.length > 1) {
+      setIsSingleTouch(false);
+    }
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
+    // Only navigate on single-finger swipe, never on pinch
+    if (!isSingleTouch) return;
     const touchEnd = e.changedTouches[0].clientX;
     const distance = touchStart - touchEnd;
     if (distance > 50) goToNext();
@@ -82,7 +97,7 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
   const currentImage = images[currentIndex];
   // No forced height - let image keep natural aspect ratio
   const imageUrl = currentImage?.asset
-    ? urlFor(currentImage.asset).width(4000).quality(95).auto('format').url()
+    ? urlFor(currentImage.asset).width(1600).auto('format').url()
     : null;
 
   return (
@@ -101,8 +116,9 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
 
       {/* Image */}
       <div
-        className="relative flex items-center justify-center w-full h-full px-12 sm:px-20 py-16"
+        className="relative flex items-center justify-center w-full h-full px-2 sm:px-20 py-12 sm:py-16"
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onClick={(e) => e.stopPropagation()}
       >
