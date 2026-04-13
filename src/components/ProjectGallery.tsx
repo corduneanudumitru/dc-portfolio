@@ -53,7 +53,7 @@ function computeRows(images: ImageInfo[], containerWidth: number, targetHeight: 
   return rows;
 }
 
-export default function ProjectGallery({ images }: { images: ProjectGalleryImage[] }) {
+export default function ProjectGallery({ images, projectSlug }: { images: ProjectGalleryImage[]; projectSlug?: string }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
@@ -76,40 +76,35 @@ export default function ProjectGallery({ images }: { images: ProjectGalleryImage
     if (images.length === 0) return;
 
     let loadedCount = 0;
-    const infos: ImageInfo[] = [];
-
-    const checkDone = () => {
-      loadedCount++;
-      if (loadedCount >= images.length) {
-        infos.sort((a, b) => a.index - b.index);
-        setImageInfos([...infos]);
-      }
-    };
+    const infos: (ImageInfo | null)[] = new Array(images.length).fill(null);
 
     images.forEach((image, index) => {
       if (!image.asset) {
-        checkDone();
+        loadedCount++;
+        if (loadedCount >= images.length) {
+          setImageInfos(infos.filter(Boolean) as ImageInfo[]);
+        }
         return;
       }
 
-      const fullUrl = urlFor(image.asset).width(2400).quality(90).auto('format').url();
       const img = new window.Image();
       img.onload = () => {
         const aspect = img.naturalWidth / img.naturalHeight;
-        infos.push({
+        infos[index] = {
           index,
-          url: fullUrl,
+          url: urlFor(image.asset).width(800).auto('format').url(),
           aspect: aspect || 1,
-        });
-        checkDone();
+        };
+        loadedCount++;
+        if (loadedCount >= images.length) {
+          setImageInfos(infos.filter(Boolean) as ImageInfo[]);
+        }
       };
       img.onerror = () => {
-        infos.push({
-          index,
-          url: fullUrl,
-          aspect: 1.5,
-        });
-        checkDone();
+        loadedCount++;
+        if (loadedCount >= images.length) {
+          setImageInfos(infos.filter(Boolean) as ImageInfo[]);
+        }
       };
       img.src = urlFor(image.asset).width(80).auto('format').url();
     });
@@ -173,6 +168,7 @@ export default function ProjectGallery({ images }: { images: ProjectGalleryImage
         initialIndex={lightboxIndex}
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
+        projectSlug={projectSlug}
       />
     </>
   );

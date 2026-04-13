@@ -8,6 +8,7 @@ export interface LightboxProps {
   initialIndex?: number;
   onClose?: () => void;
   isOpen: boolean;
+  projectSlug?: string;
 }
 
 function getImageUrl(image: { asset?: any } | undefined) {
@@ -15,10 +16,11 @@ function getImageUrl(image: { asset?: any } | undefined) {
   return urlFor(image.asset).width(1600).auto('format').url();
 }
 
-export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: LightboxProps) {
+export default function Lightbox({ images, initialIndex = 0, onClose, isOpen, projectSlug }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [dragX, setDragX] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showCopied, setShowCopied] = useState(false);
   const isSingleTouch = useRef(true);
   const touchStartX = useRef(0);
 
@@ -53,6 +55,43 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
       setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
     }, 300);
   }, [images.length, isAnimating]);
+
+  // Share current image
+  const handleShare = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!projectSlug) return;
+
+    const photoNumber = currentIndex + 1;
+    const shareUrl = `https://dumitrucorduneanu.com/work/${projectSlug}?photo=${photoNumber}`;
+
+    // Try native share first (mobile), fall back to clipboard
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          url: shareUrl,
+        });
+        return;
+      } catch {
+        // User cancelled or share failed, fall back to clipboard
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setShowCopied(true);
+      setTimeout(() => setShowCopied(false), 2000);
+    } catch {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = shareUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setShowCopied(true);
+      setTimeout(() => setShowCopied(false), 2000);
+    }
+  };
 
   // Keyboard nav
   useEffect(() => {
@@ -138,9 +177,6 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
   const prevUrl = images.length > 1 ? getImageUrl(images[prevIndex]) : null;
   const nextUrl = images.length > 1 ? getImageUrl(images[nextIndex]) : null;
 
-  // The strip holds 3 panels: [prev] [current] [next], each 100vw wide
-  // Default position: translateX(-100vw) to show the center panel
-  // dragX shifts the whole strip left/right
   const stripTransform = `translateX(calc(-100vw + ${dragX}px))`;
   const stripTransition = isAnimating ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
 
@@ -149,14 +185,38 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
       className="fixed inset-0 bg-black/95 z-50"
       onClick={onClose}
     >
-      {/* Close button */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/70 hover:text-white transition-colors z-10 text-3xl leading-none"
-        aria-label="Close"
-      >
-        &times;
-      </button>
+      {/* Top bar: share + close */}
+      <div className="absolute top-0 left-0 right-0 flex justify-between items-center px-4 sm:px-6 py-4 z-10">
+        {/* Share button */}
+        {projectSlug && (
+          <button
+            onClick={handleShare}
+            className="relative text-white/50 hover:text-white transition-colors p-2"
+            aria-label="Share this image"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+            {/* "Link copied" tooltip */}
+            {showCopied && (
+              <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white text-black text-xs px-3 py-1.5 rounded whitespace-nowrap">
+                Link copied
+              </span>
+            )}
+          </button>
+        )}
+
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="text-white/50 hover:text-white transition-colors p-2 ml-auto text-2xl leading-none"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+      </div>
 
       {/* Image strip: 3 panels side by side */}
       <div

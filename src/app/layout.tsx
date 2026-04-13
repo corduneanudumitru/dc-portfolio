@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://dcphotography.com',
+    url: 'https://dumitrucorduneanu.com',
     title: 'DC Photography | Fine Art Photography Portfolio',
     description:
       'Contemporary photography exploring light, composition, and human connection across the globe.',
