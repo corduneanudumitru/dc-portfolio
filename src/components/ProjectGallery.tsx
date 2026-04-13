@@ -60,7 +60,7 @@ export default function ProjectGallery({ images }: { images: ProjectGalleryImage
   const [imageInfos, setImageInfos] = useState<ImageInfo[]>([]);
   const [rows, setRows] = useState<RowLayout[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
-  const GAP = 4;
+  const GAP = 8;
   const TARGET_HEIGHT = 350;
 
   const handleImageError = (index: number) => {
