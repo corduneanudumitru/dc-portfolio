@@ -10,64 +10,49 @@ export interface LightboxProps {
   isOpen: boolean;
 }
 
+function getImageUrl(image: { asset?: any } | undefined) {
+  if (!image?.asset) return null;
+  return urlFor(image.asset).width(1600).auto('format').url();
+}
+
 export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
-  const [offsetX, setOffsetX] = useState(0);
+  const [dragX, setDragX] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [slideDirection, setSlideDirection] = useState<'none' | 'left' | 'right'>('none');
   const isSingleTouch = useRef(true);
   const touchStartX = useRef(0);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   // Sync currentIndex when initialIndex changes
   useEffect(() => {
     if (isOpen) {
       setCurrentIndex(initialIndex);
-      setOffsetX(0);
-      setSlideDirection('none');
+      setDragX(0);
     }
   }, [initialIndex, isOpen]);
 
-  const animateToImage = useCallback((direction: 'left' | 'right') => {
-    const screenWidth = window.innerWidth;
-    setIsAnimating(true);
-    setSlideDirection(direction);
-    // Slide current image off screen
-    setOffsetX(direction === 'left' ? -screenWidth : screenWidth);
-
-    setTimeout(() => {
-      // Switch to new image
-      setCurrentIndex((prev) => {
-        if (direction === 'left') return (prev + 1) % images.length;
-        return (prev - 1 + images.length) % images.length;
-      });
-      // Position new image off screen on the opposite side (no transition)
-      setIsAnimating(false);
-      setOffsetX(direction === 'left' ? screenWidth : -screenWidth);
-
-      // Next frame: animate new image sliding in
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setIsAnimating(true);
-          setOffsetX(0);
-          setTimeout(() => {
-            setIsAnimating(false);
-            setSlideDirection('none');
-          }, 300);
-        });
-      });
-    }, 300);
-  }, [images.length]);
-
   const goToNext = useCallback(() => {
     if (isAnimating) return;
-    animateToImage('left');
-  }, [animateToImage, isAnimating]);
+    const screenWidth = window.innerWidth;
+    setIsAnimating(true);
+    setDragX(-screenWidth);
+    setTimeout(() => {
+      setIsAnimating(false);
+      setDragX(0);
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 300);
+  }, [images.length, isAnimating]);
 
   const goToPrevious = useCallback(() => {
     if (isAnimating) return;
-    animateToImage('right');
-  }, [animateToImage, isAnimating]);
+    const screenWidth = window.innerWidth;
+    setIsAnimating(true);
+    setDragX(screenWidth);
+    setTimeout(() => {
+      setIsAnimating(false);
+      setDragX(0);
+      setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    }, 300);
+  }, [images.length, isAnimating]);
 
   // Keyboard nav
   useEffect(() => {
@@ -91,11 +76,7 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
   // Preload adjacent images
   useEffect(() => {
     if (!isOpen || images.length <= 1) return;
-    const preloadIndexes = [
-      (currentIndex + 1) % images.length,
-      (currentIndex - 1 + images.length) % images.length,
-    ];
-    preloadIndexes.forEach((idx) => {
+    [(currentIndex + 1) % images.length, (currentIndex - 1 + images.length) % images.length].forEach((idx) => {
       const img = images[idx];
       if (img?.asset) {
         const preload = new Image();
@@ -104,65 +85,68 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
     });
   }, [currentIndex, isOpen, images]);
 
-  // Touch swipe with real-time tracking
+  // Touch handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     if (isAnimating) return;
     if (e.targetTouches.length === 1) {
       isSingleTouch.current = true;
       touchStartX.current = e.targetTouches[0].clientX;
-      setIsAnimating(false);
     } else {
       isSingleTouch.current = false;
-      setOffsetX(0);
+      setDragX(0);
     }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (e.targetTouches.length > 1) {
       isSingleTouch.current = false;
-      setOffsetX(0);
+      setDragX(0);
       return;
     }
-    if (!isSingleTouch.current) return;
-    const currentX = e.targetTouches[0].clientX;
-    const diff = currentX - touchStartX.current;
-    // Apply slight resistance at edges
-    setOffsetX(diff * 0.8);
+    if (!isSingleTouch.current || isAnimating) return;
+    const diff = e.targetTouches[0].clientX - touchStartX.current;
+    setDragX(diff);
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!isSingleTouch.current || isAnimating) {
-      setOffsetX(0);
+      setDragX(0);
       return;
     }
     const touchEnd = e.changedTouches[0].clientX;
     const distance = touchStartX.current - touchEnd;
-    const threshold = window.innerWidth * 0.15; // 15% of screen width
+    const threshold = window.innerWidth * 0.15;
 
     if (distance > threshold) {
-      // Swiped left -> next image
-      animateToImage('left');
+      goToNext();
     } else if (distance < -threshold) {
-      // Swiped right -> previous image
-      animateToImage('right');
+      goToPrevious();
     } else {
       // Snap back
       setIsAnimating(true);
-      setOffsetX(0);
+      setDragX(0);
       setTimeout(() => setIsAnimating(false), 300);
     }
   };
 
   if (!isOpen || !images || images.length === 0) return null;
 
-  const currentImage = images[currentIndex];
-  const imageUrl = currentImage?.asset
-    ? urlFor(currentImage.asset).width(1600).auto('format').url()
-    : null;
+  const prevIndex = (currentIndex - 1 + images.length) % images.length;
+  const nextIndex = (currentIndex + 1) % images.length;
+
+  const currentUrl = getImageUrl(images[currentIndex]);
+  const prevUrl = images.length > 1 ? getImageUrl(images[prevIndex]) : null;
+  const nextUrl = images.length > 1 ? getImageUrl(images[nextIndex]) : null;
+
+  // The strip holds 3 panels: [prev] [current] [next], each 100vw wide
+  // Default position: translateX(-100vw) to show the center panel
+  // dragX shifts the whole strip left/right
+  const stripTransform = `translateX(calc(-100vw + ${dragX}px))`;
+  const stripTransition = isAnimating ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
 
   return (
     <div
-      className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center"
+      className="fixed inset-0 bg-black/95 z-50"
       onClick={onClose}
     >
       {/* Close button */}
@@ -174,55 +158,85 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
         &times;
       </button>
 
-      {/* Image */}
+      {/* Image strip: 3 panels side by side */}
       <div
-        ref={containerRef}
-        className="relative flex items-center justify-center w-full h-full px-2 sm:px-20 py-12 sm:py-16 overflow-hidden"
+        className="h-full overflow-hidden"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onClick={(e) => e.stopPropagation()}
       >
-        {imageUrl && (
-          <img
-            src={imageUrl}
-            alt={currentImage.alt || 'Image ' + (currentIndex + 1)}
-            className="max-w-full max-h-full object-contain select-none pointer-events-none"
-            draggable={false}
-            style={{
-              transform: `translateX(${offsetX}px)`,
-              transition: isAnimating ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none',
-              willChange: 'transform',
-            }}
-            key={currentIndex}
-          />
-        )}
+        <div
+          className="flex h-full"
+          style={{
+            width: '300vw',
+            transform: stripTransform,
+            transition: stripTransition,
+            willChange: 'transform',
+          }}
+        >
+          {/* Previous image panel */}
+          <div className="w-screen h-full flex items-center justify-center px-2 sm:px-20 py-12 sm:py-16 flex-shrink-0">
+            {prevUrl && (
+              <img
+                src={prevUrl}
+                alt={images[prevIndex]?.alt || 'Previous'}
+                className="max-w-full max-h-full object-contain select-none pointer-events-none"
+                draggable={false}
+              />
+            )}
+          </div>
 
-        {/* Prev arrow */}
-        {images.length > 1 && (
-          <button
-            onClick={(e) => { e.stopPropagation(); goToPrevious(); }}
-            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors text-4xl z-10 w-12 h-12 items-center justify-center"
-            aria-label="Previous"
-          >
-            &#8249;
-          </button>
-        )}
+          {/* Current image panel */}
+          <div className="w-screen h-full flex items-center justify-center px-2 sm:px-20 py-12 sm:py-16 flex-shrink-0">
+            {currentUrl && (
+              <img
+                src={currentUrl}
+                alt={images[currentIndex]?.alt || 'Image ' + (currentIndex + 1)}
+                className="max-w-full max-h-full object-contain select-none pointer-events-none"
+                draggable={false}
+              />
+            )}
+          </div>
 
-        {/* Next arrow */}
-        {images.length > 1 && (
-          <button
-            onClick={(e) => { e.stopPropagation(); goToNext(); }}
-            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors text-4xl z-10 w-12 h-12 items-center justify-center"
-            aria-label="Next"
-          >
-            &#8250;
-          </button>
-        )}
+          {/* Next image panel */}
+          <div className="w-screen h-full flex items-center justify-center px-2 sm:px-20 py-12 sm:py-16 flex-shrink-0">
+            {nextUrl && (
+              <img
+                src={nextUrl}
+                alt={images[nextIndex]?.alt || 'Next'}
+                className="max-w-full max-h-full object-contain select-none pointer-events-none"
+                draggable={false}
+              />
+            )}
+          </div>
+        </div>
       </div>
 
+      {/* Prev arrow (desktop) */}
+      {images.length > 1 && (
+        <button
+          onClick={(e) => { e.stopPropagation(); goToPrevious(); }}
+          className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors text-4xl z-10 w-12 h-12 items-center justify-center"
+          aria-label="Previous"
+        >
+          &#8249;
+        </button>
+      )}
+
+      {/* Next arrow (desktop) */}
+      {images.length > 1 && (
+        <button
+          onClick={(e) => { e.stopPropagation(); goToNext(); }}
+          className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors text-4xl z-10 w-12 h-12 items-center justify-center"
+          aria-label="Next"
+        >
+          &#8250;
+        </button>
+      )}
+
       {/* Counter */}
-      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-sm">
+      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-sm z-10">
         {currentIndex + 1} / {images.length}
       </div>
     </div>
