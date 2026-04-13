@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { urlFor } from '@/sanity/lib/client';
 
 export interface LightboxProps {
@@ -12,21 +12,62 @@ export interface LightboxProps {
 
 export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [offsetX, setOffsetX] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [slideDirection, setSlideDirection] = useState<'none' | 'left' | 'right'>('none');
+  const isSingleTouch = useRef(true);
+  const touchStartX = useRef(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Sync currentIndex when initialIndex changes (user clicks different image)
+  // Sync currentIndex when initialIndex changes
   useEffect(() => {
     if (isOpen) {
       setCurrentIndex(initialIndex);
+      setOffsetX(0);
+      setSlideDirection('none');
     }
   }, [initialIndex, isOpen]);
 
-  const goToNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
+  const animateToImage = useCallback((direction: 'left' | 'right') => {
+    const screenWidth = window.innerWidth;
+    setIsAnimating(true);
+    setSlideDirection(direction);
+    // Slide current image off screen
+    setOffsetX(direction === 'left' ? -screenWidth : screenWidth);
+
+    setTimeout(() => {
+      // Switch to new image
+      setCurrentIndex((prev) => {
+        if (direction === 'left') return (prev + 1) % images.length;
+        return (prev - 1 + images.length) % images.length;
+      });
+      // Position new image off screen on the opposite side (no transition)
+      setIsAnimating(false);
+      setOffsetX(direction === 'left' ? screenWidth : -screenWidth);
+
+      // Next frame: animate new image sliding in
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsAnimating(true);
+          setOffsetX(0);
+          setTimeout(() => {
+            setIsAnimating(false);
+            setSlideDirection('none');
+          }, 300);
+        });
+      });
+    }, 300);
   }, [images.length]);
 
+  const goToNext = useCallback(() => {
+    if (isAnimating) return;
+    animateToImage('left');
+  }, [animateToImage, isAnimating]);
+
   const goToPrevious = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  }, [images.length]);
+    if (isAnimating) return;
+    animateToImage('right');
+  }, [animateToImage, isAnimating]);
 
   // Keyboard nav
   useEffect(() => {
@@ -63,39 +104,58 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
     });
   }, [currentIndex, isOpen, images]);
 
-  // Touch swipe (single finger only — ignore pinch-to-zoom)
-  const [touchStart, setTouchStart] = useState(0);
-  const [isSingleTouch, setIsSingleTouch] = useState(true);
-
+  // Touch swipe with real-time tracking
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (isAnimating) return;
     if (e.targetTouches.length === 1) {
-      setIsSingleTouch(true);
-      setTouchStart(e.targetTouches[0].clientX);
+      isSingleTouch.current = true;
+      touchStartX.current = e.targetTouches[0].clientX;
+      setIsAnimating(false);
     } else {
-      setIsSingleTouch(false);
+      isSingleTouch.current = false;
+      setOffsetX(0);
     }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    // If a second finger touches during the gesture, mark as multi-touch
     if (e.targetTouches.length > 1) {
-      setIsSingleTouch(false);
+      isSingleTouch.current = false;
+      setOffsetX(0);
+      return;
     }
+    if (!isSingleTouch.current) return;
+    const currentX = e.targetTouches[0].clientX;
+    const diff = currentX - touchStartX.current;
+    // Apply slight resistance at edges
+    setOffsetX(diff * 0.8);
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    // Only navigate on single-finger swipe, never on pinch
-    if (!isSingleTouch) return;
+    if (!isSingleTouch.current || isAnimating) {
+      setOffsetX(0);
+      return;
+    }
     const touchEnd = e.changedTouches[0].clientX;
-    const distance = touchStart - touchEnd;
-    if (distance > 50) goToNext();
-    else if (distance < -50) goToPrevious();
+    const distance = touchStartX.current - touchEnd;
+    const threshold = window.innerWidth * 0.15; // 15% of screen width
+
+    if (distance > threshold) {
+      // Swiped left -> next image
+      animateToImage('left');
+    } else if (distance < -threshold) {
+      // Swiped right -> previous image
+      animateToImage('right');
+    } else {
+      // Snap back
+      setIsAnimating(true);
+      setOffsetX(0);
+      setTimeout(() => setIsAnimating(false), 300);
+    }
   };
 
   if (!isOpen || !images || images.length === 0) return null;
 
   const currentImage = images[currentIndex];
-  // No forced height - let image keep natural aspect ratio
   const imageUrl = currentImage?.asset
     ? urlFor(currentImage.asset).width(1600).auto('format').url()
     : null;
@@ -116,7 +176,8 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
 
       {/* Image */}
       <div
-        className="relative flex items-center justify-center w-full h-full px-2 sm:px-20 py-12 sm:py-16"
+        ref={containerRef}
+        className="relative flex items-center justify-center w-full h-full px-2 sm:px-20 py-12 sm:py-16 overflow-hidden"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -126,7 +187,13 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen }: 
           <img
             src={imageUrl}
             alt={currentImage.alt || 'Image ' + (currentIndex + 1)}
-            className="max-w-full max-h-full object-contain"
+            className="max-w-full max-h-full object-contain select-none pointer-events-none"
+            draggable={false}
+            style={{
+              transform: `translateX(${offsetX}px)`,
+              transition: isAnimating ? 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none',
+              willChange: 'transform',
+            }}
             key={currentIndex}
           />
         )}
