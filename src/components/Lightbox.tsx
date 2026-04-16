@@ -183,9 +183,10 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen, pr
   return (
     <div
       className="fixed inset-0 bg-black/95 z-50"
+      style={{ height: '100dvh' }}
       onClick={onClose}
     >
-      {/* Top bar: share + close */}
+      {/* Top bar: close + share */}
       <div className="absolute top-0 left-0 right-0 flex justify-between items-center px-4 sm:px-6 py-4 z-10">
         {/* Share button */}
         {projectSlug && (
@@ -236,7 +237,7 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen, pr
           }}
         >
           {/* Previous image panel */}
-          <div className="w-screen h-full flex items-center justify-center px-2 sm:px-20 py-12 sm:py-16 flex-shrink-0">
+          <div className="w-screen h-full flex items-center justify-center px-1 sm:px-20 py-4 sm:py-16 flex-shrink-0">
             {prevUrl && (
               <img
                 src={prevUrl}
@@ -248,7 +249,7 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen, pr
           </div>
 
           {/* Current image panel */}
-          <div className="w-screen h-full flex items-center justify-center px-2 sm:px-20 py-12 sm:py-16 flex-shrink-0">
+          <div className="w-screen h-full flex items-center justify-center px-1 sm:px-20 py-4 sm:py-16 flex-shrink-0">
             {currentUrl && (
               <img
                 src={currentUrl}
@@ -260,7 +261,7 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen, pr
           </div>
 
           {/* Next image panel */}
-          <div className="w-screen h-full flex items-center justify-center px-2 sm:px-20 py-12 sm:py-16 flex-shrink-0">
+          <div className="w-screen h-full flex items-center justify-center px-1 sm:px-20 py-4 sm:py-16 flex-shrink-0">
             {nextUrl && (
               <img
                 src={nextUrl}
