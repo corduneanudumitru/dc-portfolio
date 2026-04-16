@@ -183,7 +183,6 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen, pr
   return (
     <div
       className="fixed inset-0 bg-black/95 z-50"
-      style={{ height: '100dvh' }}
       onClick={onClose}
     >
       {/* Top bar: close + share */}
@@ -221,7 +220,8 @@ export default function Lightbox({ images, initialIndex = 0, onClose, isOpen, pr
 
       {/* Image strip: 3 panels side by side */}
       <div
-        className="h-full overflow-hidden"
+        className="overflow-hidden"
+        style={{ height: '100dvh' }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
