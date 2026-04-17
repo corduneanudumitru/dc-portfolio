@@ -4,6 +4,8 @@ import './globals.css';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { LocaleProvider } from '@/i18n/LocaleContext';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-serif',
@@ -58,6 +60,8 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer />
         </LocaleProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
