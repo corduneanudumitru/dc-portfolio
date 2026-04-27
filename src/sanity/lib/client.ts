@@ -15,7 +15,10 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false,
+  // Use Sanity's CDN for read queries — ~3–5x faster, eventual consistency up to 60s.
+  // Override with useCdn: false in the client call for draft-mode or admin paths.
+  useCdn: true,
+  perspective: 'published',
 });
 
 export const builder = imageUrlBuilder(client);

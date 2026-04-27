@@ -15,27 +15,33 @@ async function HeroSection() {
     : null;
 
   return (
-    <section className="relative w-full h-screen flex items-center justify-center overflow-hidden pt-20 sm:pt-24">
+    <section className="relative w-full h-screen overflow-hidden">
       {heroImageUrl ? (
-        <Image src={heroImageUrl} alt="Hero" fill className="object-cover" priority />
+        <Image
+          src={heroImageUrl}
+          alt={
+            settings?.heroImage?.alt ||
+            'Documentary photography by Dumitru Corduneanu'
+          }
+          fill
+          className="object-cover"
+          priority
+        />
       ) : (
         <div className="absolute inset-0 bg-gradient-to-b from-surface to-bg" />
       )}
-      <div className="absolute inset-0 bg-black/40" />
-      <div className="relative z-10 text-center px-4 sm:px-8">
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-text mb-4 sm:mb-6 leading-tight">
-          {settings?.siteName || 'DC'}
+      {/* Soft top-left gradient — keeps text legible without darkening the whole image */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/20 to-transparent" />
+      <div className="relative z-10 pt-24 sm:pt-28 lg:pt-32 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-light text-text leading-tight max-w-xl">
+          {settings?.siteName || 'Dumitru Corduneanu Photography'}
         </h1>
-        <div className="w-12 h-0.5 bg-accent mx-auto mb-4 sm:mb-6" />
-        <T tKey="hero.tagline" as="p" className="text-lg sm:text-2xl text-text/80 font-light max-w-2xl mx-auto mb-8 sm:mb-12" />
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
-          <Link href="/work" className="px-8 py-3 bg-accent text-bg text-sm sm:text-base font-medium hover:bg-accent/80 transition-colors">
-            <T tKey="hero.exploreWork" />
-          </Link>
-          <Link href="/contact" className="px-8 py-3 border border-text/50 text-text text-sm sm:text-base font-medium hover:border-accent hover:text-accent transition-colors">
-            <T tKey="hero.getInTouch" />
-          </Link>
-        </div>
+        <div className="w-10 h-0.5 bg-accent mt-4 mb-4" />
+        <T
+          tKey="hero.tagline"
+          as="p"
+          className="text-sm sm:text-base text-text/80 font-light max-w-md leading-relaxed"
+        />
       </div>
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
         <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">

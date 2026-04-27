@@ -21,30 +21,42 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'DC Photography | Fine Art Photography Portfolio',
+  metadataBase: new URL('https://dumitrucorduneanu.com'),
+  title: {
+    default: 'Dumitru Corduneanu | Documentary & Fine-Art Photography',
+    template: '%s | Dumitru Corduneanu',
+  },
   description:
-    'Contemporary photography exploring light, composition, and human connection across the globe.',
+    'Documentary and fine-art photography of people, ritual, and place — from the highlands of Ethiopia to the markets of Kathmandu.',
   keywords: [
-    'photography',
-    'fine art',
-    'portrait',
-    'landscape',
-    'travel',
-    'street photography',
+    'documentary photography',
+    'fine art photography',
+    'travel photography',
+    'portrait photography',
+    'Dumitru Corduneanu',
+    'Lalibela',
+    'Bhutan',
+    'Nepal',
+    'Peru',
   ],
-  authors: [{ name: 'DC' }],
+  authors: [{ name: 'Dumitru Corduneanu' }],
+  alternates: {
+    canonical: 'https://dumitrucorduneanu.com',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://dumitrucorduneanu.com',
-    title: 'DC Photography | Fine Art Photography Portfolio',
+    siteName: 'Dumitru Corduneanu Photography',
+    title: 'Dumitru Corduneanu | Documentary & Fine-Art Photography',
     description:
-      'Contemporary photography exploring light, composition, and human connection across the globe.',
+      'Documentary and fine-art photography of people, ritual, and place.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DC Photography',
-    description: 'Contemporary photography portfolio',
+    title: 'Dumitru Corduneanu | Documentary & Fine-Art Photography',
+    description:
+      'Documentary and fine-art photography of people, ritual, and place.',
   },
 };
 
