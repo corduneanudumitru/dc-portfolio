@@ -9,8 +9,8 @@ export const translations = {
 
   // Homepage - Hero
   'hero.tagline': {
-    en: 'People, ritual, and places.',
-    ro: 'Oameni, ritual și locuri.',
+    en: 'People, rituals and places',
+    ro: 'Oameni, ritualuri și locuri',
   },
   'hero.exploreWork': { en: 'Explore Work', ro: 'Explorează' },
   'hero.getInTouch': { en: 'Get in Touch', ro: 'Contactează-mă' },
