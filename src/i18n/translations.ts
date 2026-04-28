@@ -9,8 +9,8 @@ export const translations = {
 
   // Homepage - Hero
   'hero.tagline': {
-    en: 'People, ritual, and place — from Lalibela to Kathmandu.',
-    ro: 'Oameni, ritual și locuri — de la Lalibela până la Kathmandu.',
+    en: 'People, ritual, and places.',
+    ro: 'Oameni, ritual și locuri.',
   },
   'hero.exploreWork': { en: 'Explore Work', ro: 'Explorează' },
   'hero.getInTouch': { en: 'Get in Touch', ro: 'Contactează-mă' },
