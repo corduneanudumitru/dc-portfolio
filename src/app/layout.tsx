@@ -40,9 +40,6 @@ export const metadata: Metadata = {
     'Peru',
   ],
   authors: [{ name: 'Dumitru Corduneanu' }],
-  alternates: {
-    canonical: 'https://dumitrucorduneanu.com',
-  },
   openGraph: {
     type: 'website',
     locale: 'en_US',

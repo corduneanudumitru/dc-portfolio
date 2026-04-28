@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { type CSSProperties, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { urlFor } from '@/sanity/lib/client';
+import { getImageAspectRatio } from '@/sanity/lib/imageDimensions';
 
 interface Project {
   _id: string;
@@ -63,72 +64,47 @@ function computeRows(items: ProjectInfo[], containerWidth: number, targetHeight:
 
 export default function ProjectGrid({ projects }: ProjectGridProps) {
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
-  const [projectInfos, setProjectInfos] = useState<ProjectInfo[]>([]);
   const [rows, setRows] = useState<RowLayout[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const GAP = 6;
   const TARGET_HEIGHT = 400;
 
+  const projectInfos = useMemo(
+    () =>
+      (projects || []).map((project) => ({
+        project,
+        url: project.coverImage
+          ? urlFor(project.coverImage).width(1600).quality(85).auto('format').url()
+          : '',
+        aspect: getImageAspectRatio(project.coverImage, 1.5),
+      })),
+    [projects]
+  );
+
   const handleImageError = (projectId: string) => {
     setImageErrors((prev) => new Set([...prev, projectId]));
   };
 
-  useEffect(() => {
-    if (!projects || projects.length === 0) return;
-
-    let loadedCount = 0;
-    const infos: ProjectInfo[] = [];
-
-    const checkDone = () => {
-      loadedCount++;
-      if (loadedCount >= projects.length) {
-        infos.sort((a, b) => {
-          const aIdx = projects.indexOf(a.project);
-          const bIdx = projects.indexOf(b.project);
-          return aIdx - bIdx;
-        });
-        setProjectInfos([...infos]);
-      }
-    };
-
-    projects.forEach((project) => {
-      if (!project.coverImage) {
-        infos.push({ project, url: '', aspect: 1 });
-        checkDone();
-        return;
-      }
-
-      const fullUrl = urlFor(project.coverImage).width(2400).quality(90).auto('format').url();
-      const img = new window.Image();
-      img.onload = () => {
-        const aspect = img.naturalWidth / img.naturalHeight;
-        infos.push({
-          project,
-          url: fullUrl,
-          aspect: aspect || 1,
-        });
-        checkDone();
-      };
-      img.onerror = () => {
-        infos.push({ project, url: fullUrl, aspect: 1 });
-        checkDone();
-      };
-      img.src = urlFor(project.coverImage).width(80).auto('format').url();
-    });
-  }, [projects]);
-
   const layoutRows = useCallback(() => {
     if (!containerRef.current || projectInfos.length === 0) return;
     const width = containerRef.current.clientWidth;
+    if (width === 0) return;
     const computed = computeRows(projectInfos, width, TARGET_HEIGHT, GAP);
     setRows(computed);
   }, [projectInfos]);
 
   useEffect(() => {
     layoutRows();
-    const handleResize = () => layoutRows();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const container = containerRef.current;
+    if (!container || typeof ResizeObserver === 'undefined') {
+      const handleResize = () => layoutRows();
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+
+    const observer = new ResizeObserver(() => layoutRows());
+    observer.observe(container);
+    return () => observer.disconnect();
   }, [layoutRows]);
 
   if (!projects || projects.length === 0) {
@@ -143,59 +119,95 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20" ref={containerRef}>
-      {rows.length === 0 && projectInfos.length === 0 && (
-        <div className="text-center py-12 text-muted">Loading projects...</div>
-      )}
-      {rows.map((row, rowIndex) => (
-        <div
-          key={rowIndex}
-          className="flex"
-          style={{ gap: `${GAP}px`, marginBottom: `${GAP}px` }}
-        >
-          {row.items.map((item) => (
-            <Link
+      {rows.length > 0 ? (
+        rows.map((row, rowIndex) => (
+          <div
+            key={rowIndex}
+            className="flex"
+            style={{ gap: `${GAP}px`, marginBottom: `${GAP}px` }}
+          >
+            {row.items.map((item) => (
+              <ProjectCard
+                key={item.project._id}
+                item={item}
+                imageFailed={imageErrors.has(item.project._id)}
+                onImageError={handleImageError}
+                style={{
+                  width: `${item.aspect * row.height}px`,
+                  height: `${row.height}px`,
+                }}
+              />
+            ))}
+          </div>
+        ))
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[6px]">
+          {projectInfos.map((item) => (
+            <ProjectCard
               key={item.project._id}
-              href={`/work/${item.project.slug.current}`}
-              className="relative group overflow-hidden flex-shrink-0 block"
-              style={{
-                width: `${item.aspect * row.height}px`,
-                height: `${row.height}px`,
-              }}
-            >
-              {item.url ? (
-                <>
-                  <img
-                    src={item.url}
-                    alt={item.project.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    onError={() => handleImageError(item.project._id)}
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex flex-col justify-end p-4 sm:p-5">
-                    <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                      <h3 className="text-base sm:text-lg font-serif font-bold text-white mb-1">
-                        {item.project.title}
-                      </h3>
-                      {item.project.category && (
-                        <p className="text-xs text-accent uppercase tracking-wider font-medium">
-                          {item.project.category}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="w-full h-full bg-surface flex items-center justify-center border border-border">
-                  <div className="text-center">
-                    <div className="text-4xl text-muted/30 mb-2">📸</div>
-                    <p className="text-xs text-muted/50">{item.project.title}</p>
-                  </div>
-                </div>
-              )}
-            </Link>
+              item={item}
+              imageFailed={imageErrors.has(item.project._id)}
+              onImageError={handleImageError}
+              style={{ aspectRatio: item.aspect }}
+            />
           ))}
         </div>
-      ))}
+      )}
     </div>
+  );
+}
+
+function ProjectCard({
+  item,
+  imageFailed,
+  onImageError,
+  className = '',
+  style,
+}: {
+  item: ProjectInfo;
+  imageFailed: boolean;
+  onImageError: (projectId: string) => void;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  const hasImage = item.url && !imageFailed;
+
+  return (
+    <Link
+      href={`/work/${item.project.slug.current}`}
+      className={`relative group overflow-hidden flex-shrink-0 block ${className}`}
+      style={style}
+    >
+      {hasImage ? (
+        <>
+          <img
+            src={item.url}
+            alt={item.project.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            onError={() => onImageError(item.project._id)}
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex flex-col justify-end p-4 sm:p-5">
+            <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+              <h3 className="text-base sm:text-lg font-serif font-bold text-white mb-1">
+                {item.project.title}
+              </h3>
+              {item.project.category && (
+                <p className="text-xs text-accent uppercase tracking-wider font-medium">
+                  {item.project.category}
+                </p>
+              )}
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="w-full h-full bg-surface flex items-center justify-center border border-border">
+          <div className="text-center">
+            <div className="text-4xl text-muted/30 mb-2">DC</div>
+            <p className="text-xs text-muted/50">{item.project.title}</p>
+          </div>
+        </div>
+      )}
+    </Link>
   );
 }

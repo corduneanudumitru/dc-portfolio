@@ -1,4 +1,21 @@
-import { SanityImageAsset } from '@sanity/image-url/lib/types/types';
+/**
+ * Sanity image asset reference shape, augmented with the optional metadata
+ * we now request via GROQ. Defined locally to avoid coupling to deep-import
+ * paths from `@sanity/image-url` that aren't part of its stable public API.
+ */
+export interface SanityImageAsset {
+  _id?: string;
+  _ref?: string;
+  _type?: 'sanity.imageAsset' | 'reference';
+  url?: string;
+  metadata?: {
+    dimensions?: {
+      width?: number;
+      height?: number;
+      aspectRatio?: number;
+    };
+  };
+}
 
 /**
  * Portable Text / Block Content type

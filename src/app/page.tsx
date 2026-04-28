@@ -1,11 +1,8 @@
-import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import FilterBar from '@/components/FilterBar';
 import ProjectGrid from '@/components/ProjectGrid';
-import JournalScroll from '@/components/JournalScroll';
 import T from '@/components/TranslatedText';
-import { getFeaturedProjects, getRecentPosts, getSiteSettings } from '@/sanity/lib/queries';
+import { getFeaturedProjects, getSiteSettings } from '@/sanity/lib/queries';
 import { urlFor } from '@/sanity/lib/client';
 
 async function HeroSection() {
@@ -30,18 +27,27 @@ async function HeroSection() {
       ) : (
         <div className="absolute inset-0 bg-gradient-to-b from-surface to-bg" />
       )}
-      {/* Soft top-left gradient — keeps text legible without darkening the whole image */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/20 to-transparent" />
-      <div className="relative z-10 pt-24 sm:pt-28 lg:pt-32 px-4 sm:px-6 lg:px-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-light text-text leading-tight max-w-xl">
-          {settings?.siteName || 'Dumitru Corduneanu Photography'}
-        </h1>
-        <div className="w-10 h-0.5 bg-accent mt-4 mb-4" />
-        <T
-          tKey="hero.tagline"
-          as="p"
-          className="text-sm sm:text-base text-text/80 font-light max-w-md leading-relaxed"
-        />
+      {/* Subtle top vignette — only treats the top band, leaves the photo to breathe */}
+      <div className="absolute inset-x-0 top-0 h-2/5 bg-gradient-to-b from-black/55 via-black/15 to-transparent pointer-events-none" />
+
+      {/* Masthead — anchored tight under the nav so DC + name read as one editorial unit */}
+      <div className="absolute top-16 sm:top-20 left-0 z-10 px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5">
+        <div className="flex items-stretch gap-4 sm:gap-5">
+          <div className="w-px bg-accent/70 self-stretch" />
+          <div className="flex flex-col">
+            <h1 className="text-xl sm:text-2xl lg:text-[28px] font-serif font-normal text-white leading-[1.15] tracking-tight max-w-md">
+              {settings?.siteName || 'Dumitru Corduneanu'}
+            </h1>
+            <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-accent font-medium mt-3">
+              Documentary &amp; Fine-Art Photography
+            </p>
+            <T
+              tKey="hero.tagline"
+              as="p"
+              className="text-sm text-white/75 font-light italic leading-snug mt-3 max-w-[18rem]"
+            />
+          </div>
+        </div>
       </div>
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
         <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,33 +67,10 @@ async function WorkSection() {
         <T tKey="work.featured" as="h2" className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-text mb-4" />
         <T tKey="work.featuredDesc" as="p" className="text-base sm:text-lg text-muted max-w-2xl" />
       </div>
-      <Suspense fallback={<div className="text-center py-20"><T tKey="loading.projects" /></div>}>
-        <ProjectGrid projects={projects || []} />
-      </Suspense>
+      <ProjectGrid projects={projects || []} />
       <div className="px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 text-center">
         <Link href="/work" className="inline-block px-8 py-3 bg-accent/10 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors">
           <T tKey="work.viewAll" />
-        </Link>
-      </div>
-    </section>
-  );
-}
-
-async function JournalSection() {
-  const posts = await getRecentPosts(6);
-  return (
-    <section className="py-20 sm:py-32 lg:py-40 border-t border-border">
-      <div className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
-        <div className="w-10 h-0.5 bg-cool mb-6" />
-        <T tKey="journal.title" as="h2" className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-text mb-4" />
-        <T tKey="journal.desc" as="p" className="text-base sm:text-lg text-muted max-w-2xl" />
-      </div>
-      <Suspense fallback={<div className="text-center py-20"><T tKey="loading.posts" /></div>}>
-        <JournalScroll posts={posts || []} />
-      </Suspense>
-      <div className="px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 text-center">
-        <Link href="/journal" className="inline-block px-8 py-3 bg-cool/10 border border-cool text-cool text-sm font-medium hover:bg-cool hover:text-bg transition-colors">
-          <T tKey="journal.readAll" />
         </Link>
       </div>
     </section>
@@ -122,7 +105,6 @@ export default async function HomePage() {
     <>
       <HeroSection />
       <WorkSection />
-      <JournalSection />
       <AboutTeaser />
     </>
   );

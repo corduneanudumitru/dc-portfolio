@@ -1,12 +1,13 @@
 'use client';
 
+import type { ElementType } from 'react';
 import { useLocale } from '@/i18n/LocaleContext';
 import type { TranslationKey } from '@/i18n/translations';
 
 interface TranslatedTextProps {
   tKey: TranslationKey;
   fallback?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
   className?: string;
 }
 

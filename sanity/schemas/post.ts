@@ -20,7 +20,7 @@ export default defineType({
         source: 'title',
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required().unique(),
+      validation: (Rule) => Rule.required(),
       description: 'URL-friendly version of the title (auto-generated)',
     }),
     defineField({

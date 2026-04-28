@@ -1,11 +1,10 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+import { cookies } from 'next/headers';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getAboutPage } from '@/sanity/lib/queries';
 import { urlFor } from '@/sanity/lib/client';
 import PortableTextRenderer from '@/components/PortableTextRenderer';
-import { useLocale } from '@/i18n/LocaleContext';
+import { type Locale, type TranslationKey, translate } from '@/i18n/translations';
 
 interface Exhibition {
   title: string;
@@ -27,32 +26,23 @@ interface AboutData {
   exhibitions?: Exhibition[];
 }
 
-export default function AboutPage() {
-  const [aboutData, setAboutData] = useState<AboutData>({});
-  const [isLoading, setIsLoading] = useState(true);
-  const { locale, t } = useLocale();
+function isLocale(value: string | undefined): value is Locale {
+  return value === 'en' || value === 'ro';
+}
 
-  useEffect(() => {
-    async function fetchAbout() {
-      try {
-        const data = await getAboutPage();
-        setAboutData(data || {});
-      } catch (error) {
-        console.error('Failed to fetch about page:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchAbout();
-  }, []);
+export default async function AboutPage() {
+  let aboutData: AboutData = {};
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-muted">{t('loading')}</p>
-      </div>
-    );
+  try {
+    aboutData = (await getAboutPage()) || {};
+  } catch (error) {
+    console.error('Failed to fetch about page:', error);
   }
+
+  const cookieStore = await cookies();
+  const localeCookie = cookieStore.get('locale')?.value;
+  const locale: Locale = isLocale(localeCookie) ? localeCookie : 'en';
+  const t = (key: TranslationKey) => translate(key, locale);
 
   const portraitUrl = aboutData.portrait
     ? urlFor(aboutData.portrait).width(1200).url()
@@ -65,7 +55,7 @@ export default function AboutPage() {
     <div className="pt-20 sm:pt-24">
       <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 border-b border-border">
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-text">
-          {t('about.title')}
+          {aboutData.title || t('about.title')}
         </h1>
       </div>
 
@@ -76,16 +66,12 @@ export default function AboutPage() {
               <Image src={portraitUrl} alt="Dumitru Corduneanu" width={1200} height={800} className="w-full h-auto" />
             ) : (
               <div className="w-full aspect-square flex items-center justify-center">
-                <div className="text-center"><div className="text-6xl text-muted/30">📷</div></div>
+                <div className="text-center"><div className="text-6xl text-muted/30">DC</div></div>
               </div>
             )}
           </div>
 
           <div>
-            {aboutData.title && (
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-text mb-6">{aboutData.title}</h2>
-            )}
-
             {showRomanianBio ? (
               <p className="text-base sm:text-lg text-text leading-relaxed mb-6">{romanianBio}</p>
             ) : (
@@ -139,9 +125,9 @@ export default function AboutPage() {
         <div className="text-center max-w-2xl mx-auto">
           <h3 className="text-2xl sm:text-3xl font-serif font-bold text-text mb-4">{t('about.workTogether')}</h3>
           <p className="text-base sm:text-lg text-muted mb-8">{t('about.workTogetherDesc')}</p>
-          <a href="/contact" className="inline-block px-8 py-3 bg-accent text-bg text-sm font-medium hover:bg-accent/90 transition-colors">
+          <Link href="/contact" className="inline-block px-8 py-3 bg-accent text-bg text-sm font-medium hover:bg-accent/90 transition-colors">
             {t('about.contactMe')}
-          </a>
+          </Link>
         </div>
       </div>
     </div>

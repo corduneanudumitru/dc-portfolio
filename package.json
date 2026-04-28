@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
     "@portabletext/react": "^3.0.0",
@@ -21,6 +22,7 @@
     "next-sanity": "^11.6.12",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "resend": "^6.5.2",
     "sanity": "^4.22.0",
     "styled-components": "^6.3.11"
   },

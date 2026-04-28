@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-export default function ProjectError({ error, reset }: { error: Error; reset: () => void }) {
+export default function ProjectError({ error: _error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="min-h-screen pt-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto text-center py-20">

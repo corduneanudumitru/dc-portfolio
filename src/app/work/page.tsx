@@ -1,4 +1,4 @@
-import { getAllProjects } from '@/sanity/lib/queries';
+import { getProjectListings } from '@/sanity/lib/queries';
 import WorkPageClient from '@/components/WorkPageClient';
 import T from '@/components/TranslatedText';
 
@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default async function WorkPage() {
-  const projects = await getAllProjects();
+  const projects = await getProjectListings();
   const allProjects = projects || [];
   const categories = [...new Set(
     allProjects.map((p: any) => p.category).filter((c: any) => c && typeof c === 'string')

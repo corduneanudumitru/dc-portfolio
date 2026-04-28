@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity';
+import { defineArrayMember, defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'siteSettings',
@@ -55,7 +55,7 @@ export default defineType({
       title: 'Social Media Links',
       type: 'array',
       of: [
-        defineType({
+        defineArrayMember({
           name: 'socialLink',
           title: 'Social Link',
           type: 'object',

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { type CSSProperties, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { urlFor } from '@/sanity/lib/client';
+import { getImageAspectRatio } from '@/sanity/lib/imageDimensions';
 import Lightbox from '@/components/Lightbox';
 
 interface ProjectGalleryImage {
@@ -57,11 +58,26 @@ export default function ProjectGallery({ images, projectSlug }: { images: Projec
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
-  const [imageInfos, setImageInfos] = useState<ImageInfo[]>([]);
   const [rows, setRows] = useState<RowLayout[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const GAP = 8;
   const TARGET_HEIGHT = 350;
+
+  const imageInfos = useMemo(
+    () =>
+      images
+        .map((image, index) => {
+          if (!image.asset) return null;
+
+          return {
+            index,
+            url: urlFor(image).width(1000).quality(85).auto('format').url(),
+            aspect: getImageAspectRatio(image, 1.5),
+          };
+        })
+        .filter(Boolean) as ImageInfo[],
+    [images]
+  );
 
   const handleImageError = (index: number) => {
     setImageErrors((prev) => new Set([...prev, index.toString()]));
@@ -72,47 +88,10 @@ export default function ProjectGallery({ images, projectSlug }: { images: Projec
     setLightboxOpen(true);
   };
 
-  useEffect(() => {
-    if (images.length === 0) return;
-
-    let loadedCount = 0;
-    const infos: (ImageInfo | null)[] = new Array(images.length).fill(null);
-
-    images.forEach((image, index) => {
-      if (!image.asset) {
-        loadedCount++;
-        if (loadedCount >= images.length) {
-          setImageInfos(infos.filter(Boolean) as ImageInfo[]);
-        }
-        return;
-      }
-
-      const img = new window.Image();
-      img.onload = () => {
-        const aspect = img.naturalWidth / img.naturalHeight;
-        infos[index] = {
-          index,
-          url: urlFor(image.asset).width(800).auto('format').url(),
-          aspect: aspect || 1,
-        };
-        loadedCount++;
-        if (loadedCount >= images.length) {
-          setImageInfos(infos.filter(Boolean) as ImageInfo[]);
-        }
-      };
-      img.onerror = () => {
-        loadedCount++;
-        if (loadedCount >= images.length) {
-          setImageInfos(infos.filter(Boolean) as ImageInfo[]);
-        }
-      };
-      img.src = urlFor(image.asset).width(80).auto('format').url();
-    });
-  }, [images]);
-
   const layoutRows = useCallback(() => {
     if (!containerRef.current || imageInfos.length === 0) return;
     const width = containerRef.current.clientWidth;
+    if (width === 0) return;
     const computed = computeRows(imageInfos, width, TARGET_HEIGHT, GAP);
     setRows(computed);
   }, [imageInfos]);
@@ -120,9 +99,16 @@ export default function ProjectGallery({ images, projectSlug }: { images: Projec
   useEffect(() => {
     layoutRows();
 
-    const handleResize = () => layoutRows();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const container = containerRef.current;
+    if (!container || typeof ResizeObserver === 'undefined') {
+      const handleResize = () => layoutRows();
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+
+    const observer = new ResizeObserver(() => layoutRows());
+    observer.observe(container);
+    return () => observer.disconnect();
   }, [layoutRows]);
 
   if (images.length === 0) return null;
@@ -130,37 +116,44 @@ export default function ProjectGallery({ images, projectSlug }: { images: Projec
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12" ref={containerRef}>
-        {rows.length === 0 && imageInfos.length === 0 && (
-          <div className="text-center py-12 text-muted">Loading gallery...</div>
-        )}
-        {rows.map((row, rowIndex) => (
-          <div
-            key={rowIndex}
-            className="flex"
-            style={{ gap: `${GAP}px`, marginBottom: `${GAP}px` }}
-          >
-            {row.images.map((img) => (
-              <div
-                key={img.index}
-                className="relative cursor-pointer group overflow-hidden flex-shrink-0"
-                style={{
-                  width: `${img.aspect * row.height}px`,
-                  height: `${row.height}px`,
-                }}
-                onClick={() => openLightbox(img.index)}
-              >
-                <img
-                  src={img.url}
-                  alt={images[img.index]?.alt || 'Gallery image ' + (img.index + 1)}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  onError={() => handleImageError(img.index)}
-                  loading="lazy"
+        {rows.length > 0 ? (
+          rows.map((row, rowIndex) => (
+            <div
+              key={rowIndex}
+              className="flex"
+              style={{ gap: `${GAP}px`, marginBottom: `${GAP}px` }}
+            >
+              {row.images.map((img) => (
+                <GalleryImage
+                  key={img.index}
+                  image={img}
+                  alt={images[img.index]?.alt}
+                  imageFailed={imageErrors.has(img.index.toString())}
+                  onImageError={handleImageError}
+                  onOpen={openLightbox}
+                  style={{
+                    width: `${img.aspect * row.height}px`,
+                    height: `${row.height}px`,
+                  }}
                 />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-              </div>
+              ))}
+            </div>
+          ))
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {imageInfos.map((img) => (
+              <GalleryImage
+                key={img.index}
+                image={img}
+                alt={images[img.index]?.alt}
+                imageFailed={imageErrors.has(img.index.toString())}
+                onImageError={handleImageError}
+                onOpen={openLightbox}
+                style={{ aspectRatio: img.aspect }}
+              />
             ))}
           </div>
-        ))}
+        )}
       </div>
 
       <Lightbox
@@ -171,5 +164,46 @@ export default function ProjectGallery({ images, projectSlug }: { images: Projec
         projectSlug={projectSlug}
       />
     </>
+  );
+}
+
+function GalleryImage({
+  image,
+  alt,
+  imageFailed,
+  onImageError,
+  onOpen,
+  className = '',
+  style,
+}: {
+  image: ImageInfo;
+  alt?: string;
+  imageFailed: boolean;
+  onImageError: (index: number) => void;
+  onOpen: (index: number) => void;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <button
+      type="button"
+      className={`relative cursor-pointer group overflow-hidden flex-shrink-0 block text-left ${className}`}
+      style={style}
+      onClick={() => onOpen(image.index)}
+      aria-label={`Open image ${image.index + 1}`}
+    >
+      {!imageFailed ? (
+        <img
+          src={image.url}
+          alt={alt || 'Gallery image ' + (image.index + 1)}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          onError={() => onImageError(image.index)}
+          loading="lazy"
+        />
+      ) : (
+        <div className="w-full h-full bg-surface border border-border" />
+      )}
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+    </button>
   );
 }

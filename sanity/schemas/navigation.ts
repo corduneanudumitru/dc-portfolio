@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity';
+import { defineArrayMember, defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'navigation',
@@ -10,7 +10,7 @@ export default defineType({
       title: 'Navigation Items',
       type: 'array',
       of: [
-        defineType({
+        defineArrayMember({
           name: 'navItem',
           title: 'Navigation Item',
           type: 'object',

@@ -9,8 +9,8 @@ export const translations = {
 
   // Homepage - Hero
   'hero.tagline': {
-    en: 'Capturing moments that tell stories of light, emotion, and human connection',
-    ro: 'Momente care spun povești despre lumină, emoție și conexiune umană',
+    en: 'People, ritual, and place — from Lalibela to Kathmandu.',
+    ro: 'Oameni, ritual și locuri — de la Lalibela până la Kathmandu.',
   },
   'hero.exploreWork': { en: 'Explore Work', ro: 'Explorează' },
   'hero.getInTouch': { en: 'Get in Touch', ro: 'Contactează-mă' },

@@ -9,6 +9,7 @@ interface FormData {
   email: string;
   subject: string;
   message: string;
+  company: string;
 }
 
 interface FormStatus {
@@ -17,7 +18,7 @@ interface FormStatus {
 }
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState<FormData>({ name: '', email: '', subject: '', message: '' });
+  const [formData, setFormData] = useState<FormData>({ name: '', email: '', subject: '', message: '', company: '' });
   const [status, setStatus] = useState<FormStatus>({ type: 'idle' });
   const { t } = useLocale();
 
@@ -33,7 +34,7 @@ export default function ContactPage() {
       const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
       if (response.ok) {
         setStatus({ type: 'success', message: t('contact.success') });
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({ name: '', email: '', subject: '', message: '', company: '' });
         setTimeout(() => setStatus({ type: 'idle' }), 5000);
       } else {
         setStatus({ type: 'error', message: t('contact.error') });
@@ -55,6 +56,16 @@ export default function ContactPage() {
       <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <div className="max-w-xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
+            <input
+              type="text"
+              name="company"
+              value={formData.company}
+              onChange={handleChange}
+              className="hidden"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+            />
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-text mb-2">{t('contact.name')}</label>
               <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className="w-full px-4 py-3 bg-surface border border-border text-text placeholder-muted focus:outline-none focus:border-accent transition-colors" placeholder={t('contact.namePlaceholder')} />

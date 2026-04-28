@@ -1,11 +1,11 @@
-import { defineField, defineType } from 'sanity';
+import { defineArrayMember, defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'blockContent',
   title: 'Block Content',
   type: 'array',
   of: [
-    defineType({
+    defineArrayMember({
       type: 'block',
       title: 'Block',
       styles: [
@@ -50,7 +50,7 @@ export default defineType({
         ],
       },
     }),
-    defineType({
+    defineArrayMember({
       name: 'image',
       type: 'image',
       title: 'Image',

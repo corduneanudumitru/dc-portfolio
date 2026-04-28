@@ -1,5 +1,39 @@
 import { client } from './client';
 
+const imageFields = `
+  ...,
+  asset->{
+    _id,
+    "_ref": _id,
+    url,
+    metadata {
+      dimensions {
+        width,
+        height,
+        aspectRatio
+      }
+    }
+  }
+`;
+
+const projectListingFields = `
+  _id,
+  title,
+  slug,
+  coverImage {
+    ${imageFields}
+  },
+  category,
+  tags,
+  description,
+  imageCount,
+  location,
+  date,
+  featured,
+  order,
+  publishedAt
+`;
+
 /**
  * Fetch all projects, optionally filtered by category
  * @param category Optional category to filter by ('street', 'travel', 'landscape', 'portrait', 'architecture', 'documentary')
@@ -7,40 +41,23 @@ import { client } from './client';
  */
 export async function getAllProjects(category?: string) {
   const query = category
-    ? `*[_type == "project" && category == "${category}"] | order(order asc, publishedAt desc) {
-        _id,
-        title,
-        slug,
-        coverImage,
-        gallery,
-        category,
-        tags,
-        description,
-        imageCount,
-        location,
-        date,
-        featured,
-        order,
-        publishedAt,
+    ? `*[_type == "project" && category == $category] | order(order asc, publishedAt desc) {
+        ${projectListingFields}
       }`
     : `*[_type == "project"] | order(order asc, publishedAt desc) {
-        _id,
-        title,
-        slug,
-        coverImage,
-        gallery,
-        category,
-        tags,
-        description,
-        imageCount,
-        location,
-        date,
-        featured,
-        order,
-        publishedAt,
+        ${projectListingFields}
       }`;
 
-  return client.fetch(query);
+  return client.fetch(query, { category });
+}
+
+/**
+ * Fetch projects for listing pages without the full gallery payload.
+ * @param category Optional category to filter by
+ * @returns Array of project listing documents
+ */
+export async function getProjectListings(category?: string) {
+  return getAllProjects(category);
 }
 
 /**
@@ -49,18 +66,7 @@ export async function getAllProjects(category?: string) {
  */
 export async function getFeaturedProjects() {
   const query = `*[_type == "project" && featured == true] | order(order asc, publishedAt desc) {
-    _id,
-    title,
-    slug,
-    coverImage,
-    category,
-    tags,
-    description,
-    imageCount,
-    location,
-    date,
-    featured,
-    publishedAt,
+    ${projectListingFields}
   }`;
 
   return client.fetch(query);
@@ -72,12 +78,16 @@ export async function getFeaturedProjects() {
  * @returns Single project document or null
  */
 export async function getProjectBySlug(slug: string) {
-  const query = `*[_type == "project" && slug.current == "${slug}"][0] {
+  const query = `*[_type == "project" && slug.current == $slug][0] {
     _id,
     title,
     slug,
-    coverImage,
-    gallery,
+    coverImage {
+      ${imageFields}
+    },
+    gallery[] {
+      ${imageFields}
+    },
     category,
     tags,
     description,
@@ -89,7 +99,7 @@ export async function getProjectBySlug(slug: string) {
     publishedAt,
   }`;
 
-  return client.fetch(query);
+  return client.fetch(query, { slug });
 }
 
 /**
@@ -111,11 +121,13 @@ export async function getProjectSlugs() {
  */
 export async function getAllPosts(category?: string) {
   const query = category
-    ? `*[_type == "post" && category == "${category}"] | order(publishedAt desc) {
+    ? `*[_type == "post" && category == $category] | order(publishedAt desc) {
         _id,
         title,
         slug,
-        coverImage,
+        coverImage {
+          ${imageFields}
+        },
         excerpt,
         category,
         publishedAt,
@@ -124,13 +136,15 @@ export async function getAllPosts(category?: string) {
         _id,
         title,
         slug,
-        coverImage,
+        coverImage {
+          ${imageFields}
+        },
         excerpt,
         category,
         publishedAt,
       }`;
 
-  return client.fetch(query);
+  return client.fetch(query, { category });
 }
 
 /**
@@ -139,18 +153,20 @@ export async function getAllPosts(category?: string) {
  * @returns Single post document or null
  */
 export async function getPostBySlug(slug: string) {
-  const query = `*[_type == "post" && slug.current == "${slug}"][0] {
+  const query = `*[_type == "post" && slug.current == $slug][0] {
     _id,
     title,
     slug,
-    coverImage,
+    coverImage {
+      ${imageFields}
+    },
     excerpt,
     body,
     category,
     publishedAt,
   }`;
 
-  return client.fetch(query);
+  return client.fetch(query, { slug });
 }
 
 /**
@@ -171,11 +187,14 @@ export async function getPostSlugs() {
  * @returns Array of recent post documents
  */
 export async function getRecentPosts(limit: number = 5) {
-  const query = `*[_type == "post"] | order(publishedAt desc)[0...${limit}] {
+  const safeLimit = Math.max(0, Math.min(limit, 24));
+  const query = `*[_type == "post"] | order(publishedAt desc)[0...${safeLimit}] {
     _id,
     title,
     slug,
-    coverImage,
+    coverImage {
+      ${imageFields}
+    },
     excerpt,
     category,
     publishedAt,
@@ -209,7 +228,9 @@ export async function getSiteSettings() {
   const query = `*[_type == "siteSettings"][0] {
     siteName,
     tagline,
-    heroImage,
+    heroImage {
+      ${imageFields}
+    },
     seoTitle,
     seoDescription,
     socialLinks[] {
@@ -229,7 +250,9 @@ export async function getSiteSettings() {
  */
 export async function getAboutPage() {
   const query = `*[_type == "about"][0] {
-    portrait,
+    portrait {
+      ${imageFields}
+    },
     title,
     bio,
     shortBio,
@@ -270,19 +293,11 @@ export async function getPostCategories() {
  * @returns Array of matching project documents
  */
 export async function searchProjectsByTags(tags: string[]) {
-  const tagQuery = tags.map((tag) => `"${tag}"`).join(', ');
-  const query = `*[_type == "project" && count(tags[@ in [${tagQuery}]]) > 0] | order(publishedAt desc) {
-    _id,
-    title,
-    slug,
-    coverImage,
-    category,
-    tags,
-    description,
-    publishedAt,
+  const query = `*[_type == "project" && count(tags[@ in $tags]) > 0] | order(publishedAt desc) {
+    ${projectListingFields}
   }`;
 
-  return client.fetch(query);
+  return client.fetch(query, { tags });
 }
 
 /**

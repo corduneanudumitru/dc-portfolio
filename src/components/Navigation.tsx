@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getNavigation } from '@/sanity/lib/queries';
 import { useLocale } from '@/i18n/LocaleContext';
 
 interface NavItem {
@@ -14,44 +13,19 @@ interface NavItem {
 
 const navLabelMap: Record<string, string> = {
   Work: 'nav.work',
-  Journal: 'nav.journal',
   About: 'nav.about',
   Contact: 'nav.contact',
 };
 
+const navItems: NavItem[] = [
+  { label: 'Work', href: '/work' },
+  { label: 'About', href: '/about' },
+];
+
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [navItems, setNavItems] = useState<NavItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const { t } = useLocale();
-
-  useEffect(() => {
-    async function fetchNav() {
-      try {
-        const data = await getNavigation();
-        if (data?.items) {
-          setNavItems(data.items);
-        } else {
-          setNavItems([
-            { label: 'Work', href: '/work' },
-            { label: 'Journal', href: '/journal' },
-            { label: 'About', href: '/about' },
-          ]);
-        }
-      } catch (error) {
-        console.error('Failed to fetch navigation:', error);
-        setNavItems([
-          { label: 'Work', href: '/work' },
-          { label: 'Journal', href: '/journal' },
-          { label: 'About', href: '/about' },
-        ]);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchNav();
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,20 +57,19 @@ export default function Navigation() {
           </Link>
 
           <div className="hidden md:flex items-center gap-8 lg:gap-12">
-            {!isLoading &&
-              navItems.map((item) => (
-                <div key={item.label}>
-                  {item.isExternal ? (
-                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-sm font-medium hover:text-accent transition-colors">
-                      {getLabel(item)}
-                    </a>
-                  ) : (
-                    <Link href={item.href} className="text-sm font-medium hover:text-accent transition-colors">
-                      {getLabel(item)}
-                    </Link>
-                  )}
-                </div>
-              ))}
+            {navItems.map((item) => (
+              <div key={item.label}>
+                {item.isExternal ? (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-sm font-medium hover:text-accent transition-colors">
+                    {getLabel(item)}
+                  </a>
+                ) : (
+                  <Link href={item.href} className="text-sm font-medium hover:text-accent transition-colors">
+                    {getLabel(item)}
+                  </Link>
+                )}
+              </div>
+            ))}
             <Link href="/contact" className="px-6 py-2 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors">
               {t('nav.contact')}
             </Link>
@@ -111,20 +84,19 @@ export default function Navigation() {
 
         {isOpen && (
           <div className="md:hidden fixed inset-0 bg-bg/95 backdrop-blur-sm z-40 flex flex-col items-center justify-center gap-8 top-20">
-            {!isLoading &&
-              navItems.map((item) => (
-                <div key={item.label}>
-                  {item.isExternal ? (
-                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-2xl font-serif hover:text-accent transition-colors" onClick={() => setIsOpen(false)}>
-                      {getLabel(item)}
-                    </a>
-                  ) : (
-                    <Link href={item.href} className="text-2xl font-serif hover:text-accent transition-colors" onClick={() => setIsOpen(false)}>
-                      {getLabel(item)}
-                    </Link>
-                  )}
-                </div>
-              ))}
+            {navItems.map((item) => (
+              <div key={item.label}>
+                {item.isExternal ? (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-2xl font-serif hover:text-accent transition-colors" onClick={() => setIsOpen(false)}>
+                    {getLabel(item)}
+                  </a>
+                ) : (
+                  <Link href={item.href} className="text-2xl font-serif hover:text-accent transition-colors" onClick={() => setIsOpen(false)}>
+                    {getLabel(item)}
+                  </Link>
+                )}
+              </div>
+            ))}
             <Link href="/contact" className="px-8 py-3 border border-accent text-accent text-lg font-serif hover:bg-accent hover:text-bg transition-colors" onClick={() => setIsOpen(false)}>
               {t('nav.contact')}
             </Link>
