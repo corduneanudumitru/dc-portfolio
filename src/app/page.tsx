@@ -77,35 +77,11 @@ async function WorkSection() {
   );
 }
 
-async function AboutTeaser() {
-  return (
-    <section className="py-20 sm:py-32 lg:py-40 border-t border-border">
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-16 lg:gap-20 items-center">
-          <div className="relative w-full aspect-square bg-surface border border-border flex items-center justify-center">
-            <div className="text-5xl text-muted/30">📷</div>
-          </div>
-          <div>
-            <div className="w-10 h-0.5 bg-accent mb-6" />
-            <T tKey="about.title" as="h2" className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-text mb-6" />
-            <T tKey="about.teaser1" as="p" className="text-base sm:text-lg text-text leading-relaxed mb-6" />
-            <T tKey="about.teaser2" as="p" className="text-base sm:text-lg text-muted leading-relaxed mb-8" />
-            <Link href="/about" className="inline-block px-8 py-3 bg-accent/10 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors">
-              <T tKey="about.learnMore" />
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export default async function HomePage() {
   return (
     <>
       <HeroSection />
       <WorkSection />
-      <AboutTeaser />
     </>
   );
 }
