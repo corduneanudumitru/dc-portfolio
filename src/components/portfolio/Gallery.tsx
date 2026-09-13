@@ -13,27 +13,42 @@ export default function Gallery({
   const [index, setIndex] = useState<number | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
-  const returnFocus = useRef<HTMLElement | null>(null);
+  const returnFocus = useRef<HTMLButtonElement | null>(null);
+  const modeButton = useRef<HTMLButtonElement | null>(null);
+  const returnScroll = useRef({ x: 0, y: 0 });
+  const isOpen = index !== null;
   const photos = c.groups.flatMap((g) => g.photos);
   const ro = locale === "ro";
   useEffect(() => {
-    if (index === null) return;
+    if (!isOpen) return;
     const d = dialog.current;
     if (!d?.open) d?.showModal();
     document.body.classList.add("modal-open");
+    closeButton.current?.focus({ preventScroll: true });
     return () => {
       document.body.classList.remove("modal-open");
     };
-  }, [index]);
+  }, [isOpen]);
   function close() {
     dialog.current?.close();
     setIndex(null);
-    returnFocus.current?.focus();
+    document.body.classList.remove("modal-open");
+    const trigger = returnFocus.current;
+    const target = trigger?.isConnected ? trigger : modeButton.current;
+    target?.focus({ preventScroll: true });
+    window.scrollTo({
+      left: returnScroll.current.x,
+      top: returnScroll.current.y,
+      behavior: "instant",
+    });
   }
-  function open(i: number) {
-    returnFocus.current = document.activeElement as HTMLElement;
+  function open(i: number, trigger: HTMLButtonElement) {
+    // Pointer activation does not focus buttons in every browser (notably WebKit).
+    // Capture the actual trigger and make native dialog restoration agree with it.
+    returnFocus.current = trigger;
+    returnScroll.current = { x: window.scrollX, y: window.scrollY };
+    trigger.focus({ preventScroll: true });
     setIndex(i);
-    requestAnimationFrame(() => closeButton.current?.focus());
   }
   function figure(i: number) {
     const p = photos[i];
@@ -44,7 +59,7 @@ export default function Gallery({
       >
         <button
           type="button"
-          onClick={() => open(i)}
+          onClick={(event) => open(i, event.currentTarget)}
           aria-label={`${ro ? "Mărește fotografia" : "Enlarge photograph"} ${i + 1}`}
         >
           <Photo photo={p} priority={i < 3} locale={locale} />
@@ -78,6 +93,7 @@ export default function Gallery({
           {["sequence", "overview"].map((m) => (
             <button
               key={m}
+              ref={mode === m ? modeButton : undefined}
               className={mode === m ? "active" : ""}
               aria-pressed={mode === m}
               onClick={() => setMode(m)}
