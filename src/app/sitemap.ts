@@ -1,9 +1,12 @@
 import type { MetadataRoute } from 'next';
+import {getPortfolio} from '@/portfolio/data';
 import { getProjectListings } from '@/sanity/lib/queries';
 
 const BASE_URL = 'https://dumitrucorduneanu.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if(process.env.NEXT_PUBLIC_SITE_PREVIEW === 'true') return [];
+  const {collections}=await getPortfolio();
   let projects: any[] = [];
 
   try {
@@ -34,5 +37,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     }));
 
-  return [...staticRoutes, ...projectRoutes];
+  return [...staticRoutes, ...projectRoutes, {url:BASE_URL+'/books'}, ...collections.map(c=>({url:BASE_URL+'/collections/'+c.slug}))];
 }

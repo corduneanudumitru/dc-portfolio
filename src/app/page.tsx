@@ -1,87 +1,176 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import ProjectGrid from '@/components/ProjectGrid';
-import T from '@/components/TranslatedText';
-import { getFeaturedProjects, getSiteSettings } from '@/sanity/lib/queries';
-import { urlFor } from '@/sanity/lib/client';
-
-async function HeroSection() {
-  const settings = await getSiteSettings();
-  const heroImageUrl = settings?.heroImage
-    ? urlFor(settings.heroImage).width(1920).height(1080).url()
-    : null;
-
-  return (
-    <section className="relative w-full h-screen overflow-hidden">
-      {heroImageUrl ? (
-        <Image
-          src={heroImageUrl}
-          alt={
-            settings?.heroImage?.alt ||
-            'Documentary photography by Dumitru Corduneanu'
-          }
-          fill
-          className="object-cover"
-          priority
+import Link from "next/link";
+import { getPortfolio } from "@/portfolio/data";
+import { getLocale } from "@/portfolio/locale";
+import { Card, Tabs } from "@/components/portfolio/Cards";
+import Photo from "@/components/portfolio/Photo";
+export const dynamic = "force-dynamic";
+export default async function Home() {
+  const [{ collections: C, home }, locale] = await Promise.all([
+    getPortfolio(),
+    getLocale(),
+  ]);
+  const ro = locale === "ro";
+  const get = (slug: string) => C.find((c) => c.slug === slug);
+  const cards = (slugs: string[], priority = false) =>
+    slugs.map((slug) => {
+      const c = get(slug);
+      return c ? (
+        <Card
+          key={slug}
+          collection={c}
+          home
+          priority={priority}
+          locale={locale}
         />
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-b from-surface to-bg" />
-      )}
-      {/* Subtle top vignette — only treats the top band, leaves the photo to breathe */}
-      <div className="absolute inset-x-0 top-0 h-2/5 bg-gradient-to-b from-black/55 via-black/15 to-transparent pointer-events-none" />
-
-      {/* Masthead — anchored tight under the nav so DC + name read as one editorial unit */}
-      <div className="absolute top-16 sm:top-20 left-0 z-10 px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5">
-        <div className="flex items-stretch gap-4 sm:gap-5">
-          <div className="w-px bg-accent/70 self-stretch" />
-          <div className="flex flex-col">
-            <h1 className="text-xl sm:text-2xl lg:text-[28px] font-serif font-normal text-white leading-[1.15] tracking-tight max-w-md">
-              {settings?.siteName || 'Dumitru Corduneanu'}
-            </h1>
-            <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-accent font-medium mt-3">
-              Documentary &amp; Fine-Art Photography
-            </p>
-            <T
-              tKey="hero.tagline"
-              as="p"
-              className="text-sm text-white/75 font-light italic leading-snug mt-3 max-w-[18rem]"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-        <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </div>
-    </section>
-  );
-}
-
-async function WorkSection() {
-  const projects = await getFeaturedProjects();
-  return (
-    <section id="work" className="py-20 sm:py-32 lg:py-40">
-      <div className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
-        <div className="w-10 h-0.5 bg-accent mb-6" />
-        <T tKey="work.featured" as="h2" className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-text mb-4" />
-        <T tKey="work.featuredDesc" as="p" className="text-base sm:text-lg text-muted max-w-2xl" />
-      </div>
-      <ProjectGrid projects={projects || []} />
-      <div className="px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 text-center">
-        <Link href="/work" className="inline-block px-8 py-3 bg-accent/10 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors">
-          <T tKey="work.viewAll" />
-        </Link>
-      </div>
-    </section>
-  );
-}
-
-export default async function HomePage() {
+      ) : null;
+    });
   return (
     <>
-      <HeroSection />
-      <WorkSection />
+      <section className="home-intro">
+        <div>
+          <div className="eyebrow">
+            Dumitru Corduneanu · {ro ? "Fotografie" : "Photography"}
+          </div>
+          <h1>
+            {ro
+              ? home.titleRo || "Oameni, locuri, clipe trecătoare."
+              : home.title}
+          </h1>
+        </div>
+        <Tabs locale={locale} />
+      </section>
+      <section
+        aria-label={
+          ro ? "Teme de fotografie stradală" : "Street photography themes"
+        }
+      >
+        <div className="lead-grid">{cards(home.opening, true)}</div>
+        <div className="more-themes">
+          {home.secondary.map((slug) => {
+            const c = get(slug);
+            return c ? (
+              <Link
+                key={slug}
+                className="mini-card"
+                href={"/collections/" + slug}
+              >
+                <Photo photo={c.homeCover || c.cover} locale={locale} />
+                <div>
+                  <h3>{ro && c.titleRo ? c.titleRo : c.title}</h3>
+                  <p>
+                    {c.groups.flatMap((g) => g.photos).length}{" "}
+                    {ro ? "fotografii" : "photographs"} ↗
+                  </p>
+                </div>
+              </Link>
+            ) : null;
+          })}
+        </div>
+      </section>
+      <section className="section">
+        <div className="section-head">
+          <span className="eyebrow">
+            {ro ? "Un proiect în desfășurare" : "An ongoing project"}
+          </span>
+          <Link className="textlink" href="/collections/moldova">
+            {ro ? "Descoperă Moldova" : "View Moldova"} ↗
+          </Link>
+        </div>
+        <div className="moldova">
+          <Link
+            className="moldova-pictures"
+            href="/collections/moldova"
+            aria-label={
+              ro
+                ? "Explorează proiectul Moldova"
+                : "Explore the Moldova project"
+            }
+          >
+            {home.moldovaPhotos.map((p) => (
+              <Photo key={p.id} photo={p} locale={locale} />
+            ))}
+          </Link>
+          <div className="moldova-copy">
+            <div className="eyebrow">
+              {ro ? "Oamenii Moldovei" : "People of Moldova"}
+            </div>
+            <h2>Moldova</h2>
+            <p>
+              {ro
+                ? "Un corp de lucrări personal, care crește prin oamenii și locurile pe care le întâlnesc. Ceva familiar celor de aici; o privire pentru cei din alte părți."
+                : "A personal body of work, growing through the people and places I encounter. Something familiar to those who live here; a glimpse for those who don’t."}
+            </p>
+            <Link className="textlink" href="/collections/moldova">
+              {get("moldova")?.groups.flatMap((g) => g.photos).length}{" "}
+              {ro
+                ? "fotografii · Explorează proiectul"
+                : "photographs · Explore the project"}{" "}
+              ↗
+            </Link>
+          </div>
+        </div>
+      </section>
+      <section className="section">
+        <div className="section-head">
+          <h2>{ro ? "Proiecte" : "Projects"}</h2>
+          <Link className="textlink" href="/work?kind=projects">
+            {ro ? "Toate proiectele" : "All projects"} ↗
+          </Link>
+        </div>
+        <div className="three-grid">
+          {cards(["jerusalem", "lalibela", "bhutan"])}
+        </div>
+        <div className="section-links">
+          {["ethiopia", "summer-gatherings"].map((slug) => {
+            const c = get(slug);
+            return c ? (
+              <Link key={slug} href={"/collections/" + slug}>
+                {ro && c.titleRo ? c.titleRo : c.title} ↗
+              </Link>
+            ) : null;
+          })}
+        </div>
+      </section>
+      <section className="section">
+        <div className="section-head">
+          <h2>{ro ? "Portrete" : "Portraits"}</h2>
+          <Link className="textlink" href="/work?kind=portraits">
+            {ro ? "Toate portretele" : "All portraits"} ↗
+          </Link>
+        </div>
+        <div className="portrait-row">{cards(["artists", "encounters"])}</div>
+      </section>
+      <section className="section">
+        <div className="section-head">
+          <h2>{ro ? "Studii" : "Studies"}</h2>
+          <Link className="textlink" href="/work?kind=studies">
+            {ro ? "Toate studiile" : "All studies"} ↗
+          </Link>
+        </div>
+        <div className="three-grid">
+          {cards(["tango", "high-ground", "close-to-home"])}
+        </div>
+      </section>
+      <section className="section books-strip">
+        <div>
+          <div className="eyebrow">
+            {ro ? "În pregătire" : "In preparation"}
+          </div>
+          <h2>
+            {ro
+              ? "Fotografii care devin cărți."
+              : "Photographs becoming books."}
+          </h2>
+          <p>
+            {ro
+              ? "Două lucrări în pregătire: o selecție din fotografia mea și o carte despre Moldova."
+              : "Two works in progress: a selection across my photography, and a book about Moldova."}
+          </p>
+        </div>
+        <Link className="textlink" href="/books">
+          {ro ? "Cărți în pregătire" : "Books in progress"} ↗
+        </Link>
+      </section>
     </>
   );
 }

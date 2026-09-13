@@ -1,108 +1,52 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useLocale } from '@/i18n/LocaleContext';
-
-interface NavItem {
-  label: string;
-  href: string;
-  isExternal?: boolean;
-  order?: number;
-}
-
-const navLabelMap: Record<string, string> = {
-  Work: 'nav.work',
-  About: 'nav.about',
-  Contact: 'nav.contact',
-};
-
-const navItems: NavItem[] = [
-  { label: 'Work', href: '/work' },
-  { label: 'About', href: '/about' },
-];
-
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useLocale } from "@/i18n/LocaleContext";
 export default function Navigation() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const { t } = useLocale();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, []);
-
-  const getLabel = (item: NavItem) => {
-    const key = navLabelMap[item.label];
-    return key ? t(key as any) : item.label;
-  };
-
+  const pathname = usePathname();
+  const { locale } = useLocale();
+  if (pathname.startsWith("/studio")) return null;
+  const ro = locale === "ro";
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-bg/80 backdrop-blur-md border-b border-border' : 'bg-transparent'
-      }`}
-    >
-      <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="text-2xl sm:text-3xl font-serif font-bold hover:text-accent">
-            DC
-          </Link>
-
-          <div className="hidden md:flex items-center gap-8 lg:gap-12">
-            {navItems.map((item) => (
-              <div key={item.label}>
-                {item.isExternal ? (
-                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-sm font-medium hover:text-accent transition-colors">
-                    {getLabel(item)}
-                  </a>
-                ) : (
-                  <Link href={item.href} className="text-sm font-medium hover:text-accent transition-colors">
-                    {getLabel(item)}
-                  </Link>
-                )}
-              </div>
-            ))}
-            <Link href="/contact" className="px-6 py-2 border border-accent text-accent text-sm font-medium hover:bg-accent hover:text-bg transition-colors">
-              {t('nav.contact')}
+    <>
+      <a className="skip" href="#main">
+        {ro ? "Sari la fotografii" : "Skip to photographs"}
+      </a>
+      <header className="masthead wrap">
+        <Link href="/" className="brand">
+          Dumitru Corduneanu
+        </Link>
+        <nav
+          className="nav"
+          aria-label={ro ? "Navigare principală" : "Main navigation"}
+        >
+          {[
+            ["/work", ro ? "Lucrări" : "Work"],
+            ["/collections/moldova", "Moldova"],
+            ["/books", ro ? "Cărți" : "Books"],
+            ["/about", ro ? "Despre" : "About"],
+            ["/contact", "Contact"],
+          ].map(([href, label]) => (
+            <Link
+              key={href}
+              href={href}
+              aria-current={pathname === href ? "page" : undefined}
+            >
+              {label}
             </Link>
-          </div>
-
-          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden flex flex-col gap-1.5 focus:outline-none" aria-label="Toggle menu">
-            <span className={`h-0.5 w-6 bg-text transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`h-0.5 w-6 bg-text transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`} />
-            <span className={`h-0.5 w-6 bg-text transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          ))}
+          <button
+            className="locale-switch"
+            aria-label={ro ? "Switch to English" : "Schimbă în română"}
+            onClick={() => {
+              document.cookie = `locale=${ro ? "en" : "ro"};path=/;max-age=31536000;samesite=lax`;
+              window.location.reload();
+            }}
+          >
+            {ro ? "EN" : "RO"}
           </button>
-        </div>
-
-        {isOpen && (
-          <div className="md:hidden fixed inset-0 bg-bg/95 backdrop-blur-sm z-40 flex flex-col items-center justify-center gap-8 top-20">
-            {navItems.map((item) => (
-              <div key={item.label}>
-                {item.isExternal ? (
-                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-2xl font-serif hover:text-accent transition-colors" onClick={() => setIsOpen(false)}>
-                    {getLabel(item)}
-                  </a>
-                ) : (
-                  <Link href={item.href} className="text-2xl font-serif hover:text-accent transition-colors" onClick={() => setIsOpen(false)}>
-                    {getLabel(item)}
-                  </Link>
-                )}
-              </div>
-            ))}
-            <Link href="/contact" className="px-8 py-3 border border-accent text-accent text-lg font-serif hover:bg-accent hover:text-bg transition-colors" onClick={() => setIsOpen(false)}>
-              {t('nav.contact')}
-            </Link>
-          </div>
-        )}
-      </div>
-    </nav>
+        </nav>
+      </header>
+    </>
   );
 }

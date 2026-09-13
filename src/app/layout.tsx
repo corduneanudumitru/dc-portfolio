@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond, Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
+import './portfolio.css';
+import {getLocale} from '@/portfolio/locale';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { LocaleProvider } from '@/i18n/LocaleContext';
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
   },
   description:
     'Documentary and fine-art photography of people, ritual, and place — from the highlands of Ethiopia to the markets of Kathmandu.',
+  robots: process.env.NEXT_PUBLIC_SITE_PREVIEW === 'true' ? {index:false,follow:false} : undefined,
   keywords: [
     'documentary photography',
     'fine art photography',
@@ -57,35 +60,37 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale=await getLocale();
+  const preview=process.env.NEXT_PUBLIC_SITE_PREVIEW === "true";
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang={locale} className={`${cormorant.variable} ${inter.variable}`}>
       <head>
-        <Script
+        {!preview && <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-8BVD8ZZGDN"
           strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
+        />}
+        {!preview && <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-8BVD8ZZGDN');
           `}
-        </Script>
+        </Script>}
       </head>
-      <body className="bg-bg text-text font-sans antialiased">
-        <LocaleProvider>
+      <body className="antialiased">
+        <LocaleProvider initialLocale={locale}>
           <Navigation />
-          <main>{children}</main>
+          <main id="main" tabIndex={-1} className="wrap">{children}</main>
           <Footer />
         </LocaleProvider>
-        <Analytics />
-        <SpeedInsights />
+        {!preview && <Analytics />}
+        {!preview && <SpeedInsights />}
       </body>
     </html>
   );

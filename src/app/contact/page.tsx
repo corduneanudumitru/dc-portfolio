@@ -20,7 +20,7 @@ interface FormStatus {
 export default function ContactPage() {
   const [formData, setFormData] = useState<FormData>({ name: '', email: '', subject: '', message: '', company: '' });
   const [status, setStatus] = useState<FormStatus>({ type: 'idle' });
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -46,7 +46,8 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pt-20 sm:pt-24">
+    <div className="contact-page">
+      {process.env.NEXT_PUBLIC_SITE_PREVIEW === 'true' && <p className="contact-preview-note">{t('nav.contact')}: <a href="https://dumitrucorduneanu.com/contact" className="textlink">{locale === 'ro' ? 'Folosește formularul de pe site-ul live ↗' : 'Use the live contact form ↗'}</a><br/>{locale === 'ro' ? 'Această previzualizare nu trimite mesaje.' : 'This preview does not send messages.'}</p>}
       <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 border-b border-border">
         <div className="w-10 h-0.5 bg-accent mb-6" />
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-text mb-4">{t('contact.title')}</h1>
@@ -91,7 +92,7 @@ export default function ContactPage() {
             </div>
             {status.type === 'success' && <div className="p-4 bg-accent/10 border border-accent text-accent text-sm">{status.message}</div>}
             {status.type === 'error' && <div className="p-4 bg-red-500/10 border border-red-500 text-red-400 text-sm">{status.message}</div>}
-            <button type="submit" disabled={status.type === 'loading'} className="w-full px-8 py-4 bg-accent text-bg text-base font-medium hover:bg-accent/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            <button type="submit" disabled={status.type === 'loading' || process.env.NEXT_PUBLIC_SITE_PREVIEW === 'true'} className="w-full px-8 py-4 bg-accent text-bg text-base font-medium hover:bg-accent/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
               {status.type === 'loading' ? t('contact.sending') : t('contact.send')}
             </button>
           </form>
