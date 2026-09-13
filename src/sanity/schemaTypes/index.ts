@@ -1,3 +1,6 @@
+import photograph from '../../../sanity/schemas/photograph';
+import collection from '../../../sanity/schemas/collection';
+import portfolioHome from '../../../sanity/schemas/portfolioHome';
 import { type SchemaTypeDefinition } from 'sanity'
 import blockContent from '../../../sanity/schemas/blockContent'
 import project from '../../../sanity/schemas/project'
@@ -7,5 +10,5 @@ import siteSettings from '../../../sanity/schemas/siteSettings'
 import about from '../../../sanity/schemas/about'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [blockContent, project, post, navigation, siteSettings, about],
+  types: [photograph, collection, portfolioHome, blockContent, project, post, navigation, siteSettings, about],
 }

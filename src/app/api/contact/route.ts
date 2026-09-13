@@ -66,6 +66,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (process.env.NEXT_PUBLIC_SITE_PREVIEW === 'true') {
+      return NextResponse.json({error:'This preview does not send messages. Please use the contact form on the live website.'},{status:503});
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.CONTACT_EMAIL;
     const fromEmail = process.env.RESEND_FROM_EMAIL;

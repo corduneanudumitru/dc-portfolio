@@ -13,8 +13,8 @@ const LocaleContext = createContext<LocaleContextType>({
   t: (key) => translate(key, 'en'),
 });
 
-export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocale] = useState<Locale>('en');
+export function LocaleProvider({ children, initialLocale = 'en' }: { children: React.ReactNode; initialLocale?: Locale }) {
+  const [locale, setLocale] = useState<Locale>(initialLocale);
 
   useEffect(() => {
     const cookies = document.cookie.split(';');
