@@ -128,6 +128,22 @@ export default function Gallery({
           close();
         }}
         onKeyDown={(e) => {
+          if (e.key === "Tab") {
+            const controls = Array.from(
+              dialog.current?.querySelectorAll<HTMLButtonElement>(
+                "button:not(:disabled)",
+              ) || [],
+            );
+            const first = controls[0],
+              last = controls[controls.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+              e.preventDefault();
+              last?.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+              e.preventDefault();
+              first?.focus();
+            }
+          }
           if (e.key === "ArrowLeft") {
             e.preventDefault();
             step(-1);

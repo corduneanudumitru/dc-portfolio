@@ -1,0 +1,880 @@
+{
+  "dataset": "redesign-preview",
+  "photos": [
+    {
+      "sourceId": "A1448",
+      "photoId": "photograph-A1448",
+      "assetId": "image-d04ffb4dd7e7f4ad579d243fabc8bc48dfaac2fb-7864x5200-jpg"
+    },
+    {
+      "sourceId": "A2201",
+      "photoId": "photograph-A2201",
+      "assetId": "image-2b70c6470ca6ddad631e9525b12370f745d57b91-6635x4423-jpg"
+    },
+    {
+      "sourceId": "N0169",
+      "photoId": "photograph-N0169",
+      "assetId": "image-98faddf8305ea4282b9f67d61df633f1eb7b4755-8358x5572-jpg"
+    },
+    {
+      "sourceId": "A0602",
+      "photoId": "photograph-A0602",
+      "assetId": "image-bc8859911f984a591c00438e41ede7a2b62e5479-9451x6277-jpg"
+    },
+    {
+      "sourceId": "A0055",
+      "photoId": "photograph-A0055",
+      "assetId": "image-08d39b6ffacb38ceb29ab97e4f99fb5365dffd81-6749x4499-jpg"
+    },
+    {
+      "sourceId": "A2212",
+      "photoId": "photograph-A2212",
+      "assetId": "image-f075750d4517fba97a8fc6053092eeec39c214d3-9364x6219-jpg"
+    },
+    {
+      "sourceId": "A0605",
+      "photoId": "photograph-A0605",
+      "assetId": "image-8c1e0309b5261d25e340f7927ae1f3d6ac5aa4df-9528x6328-jpg"
+    },
+    {
+      "sourceId": "N0183",
+      "photoId": "photograph-N0183",
+      "assetId": "image-c176a612c817db1c42691b5505a2585585a83586-8640x5760-jpg"
+    },
+    {
+      "sourceId": "work_london-streets-046",
+      "photoId": "photograph-work_london-streets-046",
+      "assetId": "image-d59f311f5b2c4f48d82ab518b02ff28d702bb81e-3000x1983-jpg"
+    },
+    {
+      "sourceId": "A1642",
+      "photoId": "photograph-A1642",
+      "assetId": "image-f4ebbf6e97ca27fff04d0498c6c381e3b8e4f7e6-9520x6336-jpg"
+    },
+    {
+      "sourceId": "A1523",
+      "photoId": "photograph-A1523",
+      "assetId": "image-b1da7556274b03c92f3747a683b010f50b85b0e6-7864x5200-jpg"
+    },
+    {
+      "sourceId": "work_bw-film-025",
+      "photoId": "photograph-work_bw-film-025",
+      "assetId": "image-0cbfc2b6f4cdc1e0ed7f55dbc7c5977556af0d68-3000x2133-jpg"
+    },
+    {
+      "sourceId": "A0437",
+      "photoId": "photograph-A0437",
+      "assetId": "image-2631e4addf53999b8cee88a364e3052f7fa95144-8363x5554-jpg"
+    },
+    {
+      "sourceId": "A0492",
+      "photoId": "photograph-A0492",
+      "assetId": "image-0348244f6d0454c6bacb14f3505eb021671f6af9-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A1443",
+      "photoId": "photograph-A1443",
+      "assetId": "image-7fc71b5fdc2712109c7e1b04513e3f0f1664f897-7864x5200-jpg"
+    },
+    {
+      "sourceId": "A1504",
+      "photoId": "photograph-A1504",
+      "assetId": "image-c99953c3873dfedb86b4158a6609784a70260a70-7332x4848-jpg"
+    },
+    {
+      "sourceId": "N0178",
+      "photoId": "photograph-N0178",
+      "assetId": "image-ce7399c51cc96f961da791edcd6872ae4b00f3b8-8492x5661-jpg"
+    },
+    {
+      "sourceId": "work_london-streets-038",
+      "photoId": "photograph-work_london-streets-038",
+      "assetId": "image-0ea29fdcaa22dec1e18696d9c15cc388b47e94e3-3000x1992-jpg"
+    },
+    {
+      "sourceId": "A0124",
+      "photoId": "photograph-A0124",
+      "assetId": "image-14ace8f2847b01f0946c3090c41ee1e59851833b-7008x4672-jpg"
+    },
+    {
+      "sourceId": "N0192",
+      "photoId": "photograph-N0192",
+      "assetId": "image-cdf87da4b2d6890f45cb0c56bc9ff1105c6dc3a7-4666x6999-jpg"
+    },
+    {
+      "sourceId": "work_bw-film-061",
+      "photoId": "photograph-work_bw-film-061",
+      "assetId": "image-ba868575d998c52f8e5c9121e14dff06ea70ab75-2000x3000-jpg"
+    },
+    {
+      "sourceId": "work_london-streets-043",
+      "photoId": "photograph-work_london-streets-043",
+      "assetId": "image-addd3ce6d3112bc7e28fb72adc9a460d24828b5a-3000x1983-jpg"
+    },
+    {
+      "sourceId": "A0377",
+      "photoId": "photograph-A0377",
+      "assetId": "image-9bd9cd8111d03f982bf8d8edf728c03d9c915c97-7760x5154-jpg"
+    },
+    {
+      "sourceId": "work_bw-film-027",
+      "photoId": "photograph-work_bw-film-027",
+      "assetId": "image-cf100d31ff7b67e80eedd63ae352c592e29c72c0-3000x1962-jpg"
+    },
+    {
+      "sourceId": "A0452",
+      "photoId": "photograph-A0452",
+      "assetId": "image-2a2dcb8bb825bd10d4b7411358d605f6de2235e9-7008x4672-jpg"
+    },
+    {
+      "sourceId": "A1060",
+      "photoId": "photograph-A1060",
+      "assetId": "image-259a615dbd4fdc0c130c7f823593dd87ac755757-7864x5200-jpg"
+    },
+    {
+      "sourceId": "A0994",
+      "photoId": "photograph-A0994",
+      "assetId": "image-e097eb1226af0f73bce84279a0dee970b515ffaa-7864x5200-jpg"
+    },
+    {
+      "sourceId": "A1693",
+      "photoId": "photograph-A1693",
+      "assetId": "image-2b883e8464cd1401a8efd9d8800e9d0baf4db2f8-4786x3179-jpg"
+    },
+    {
+      "sourceId": "A2140",
+      "photoId": "photograph-A2140",
+      "assetId": "image-f2d33aa6f3fb7fd4ff354e3515e42c419e29243d-8731x5799-jpg"
+    },
+    {
+      "sourceId": "A1605",
+      "photoId": "photograph-A1605",
+      "assetId": "image-f650c4c0e58c6f598264c464d1a189fd1b033ecb-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A0425",
+      "photoId": "photograph-A0425",
+      "assetId": "image-543cec3c4e74793164fd13cae6ed9afd91a711ed-8000x5313-jpg"
+    },
+    {
+      "sourceId": "A2184",
+      "photoId": "photograph-A2184",
+      "assetId": "image-61bad4985682faccb9e6c9f82167383586d3122a-3534x5301-jpg"
+    },
+    {
+      "sourceId": "work_nepal-003",
+      "photoId": "photograph-work_nepal-003",
+      "assetId": "image-48a52ffe5dc08c25a78c79a792f0de08b9b5f5da-3000x2001-jpg"
+    },
+    {
+      "sourceId": "A0069",
+      "photoId": "photograph-A0069",
+      "assetId": "image-ccaae4493399ced9b02f5c44a9c2ed5d000c011b-7008x4672-jpg"
+    },
+    {
+      "sourceId": "work_london-streets-013",
+      "photoId": "photograph-work_london-streets-013",
+      "assetId": "image-627dade5514b627888b5deae299930014e64ffc6-3000x2000-jpg"
+    },
+    {
+      "sourceId": "A0059",
+      "photoId": "photograph-A0059",
+      "assetId": "image-0d61116bf481b5c8220e05f6c137fe19bb3310f4-7008x4672-jpg"
+    },
+    {
+      "sourceId": "A0127",
+      "photoId": "photograph-A0127",
+      "assetId": "image-f95715dc9196c3e562e9763cbed8f7870f81a6ce-7008x4672-jpg"
+    },
+    {
+      "sourceId": "A1232",
+      "photoId": "photograph-A1232",
+      "assetId": "image-6302488efd21649c6878dcf8b37285b70f6dc88c-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A1292",
+      "photoId": "photograph-A1292",
+      "assetId": "image-a161ad9a29b0f79a2172226a622e702691bad779-9528x6328-jpg"
+    },
+    {
+      "sourceId": "work_bw-film-039",
+      "photoId": "photograph-work_bw-film-039",
+      "assetId": "image-b75c70ddc87376da85e608aae3588a0a69d5b618-3000x2000-jpg"
+    },
+    {
+      "sourceId": "A1260",
+      "photoId": "photograph-A1260",
+      "assetId": "image-0b3b0ebb5acc8cc58eac3c56f33c1f30f56a663e-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A0088",
+      "photoId": "photograph-A0088",
+      "assetId": "image-b2f7e228f706b7c0c48b267368ff64e679a8c63d-4672x7008-jpg"
+    },
+    {
+      "sourceId": "A0467",
+      "photoId": "photograph-A0467",
+      "assetId": "image-a3fc2706a2a3a879dc90525346bbca3574a73e7e-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A1628",
+      "photoId": "photograph-A1628",
+      "assetId": "image-e69dd577846c9c07e48b376e582c67b9557a4199-6328x9528-jpg"
+    },
+    {
+      "sourceId": "A1662",
+      "photoId": "photograph-A1662",
+      "assetId": "image-434c26a45b7f31e5913d236ec388891fd6ad4091-7783x5180-jpg"
+    },
+    {
+      "sourceId": "A0267",
+      "photoId": "photograph-A0267",
+      "assetId": "image-b49317c26f58bbcb9edd1044108c3f040a3111e5-7864x5200-jpg"
+    },
+    {
+      "sourceId": "work_abu-dhabi-005",
+      "photoId": "photograph-work_abu-dhabi-005",
+      "assetId": "image-a8ff7245e436a8d2eb095dd2755002939f0a9a82-3000x2000-jpg"
+    },
+    {
+      "sourceId": "work_london-streets-054",
+      "photoId": "photograph-work_london-streets-054",
+      "assetId": "image-de2c0bfa19d616e35b8565c02a13d02ad548fa31-1983x3000-jpg"
+    },
+    {
+      "sourceId": "work_travel-031",
+      "photoId": "photograph-work_travel-031",
+      "assetId": "image-f399add4cfc3391f5d53c2683240b7a38e426d49-2456x1639-jpg"
+    },
+    {
+      "sourceId": "A2223",
+      "photoId": "photograph-A2223",
+      "assetId": "image-8f4665b7eb9c250f39d5563cc9d245db533ca629-7634x5070-jpg"
+    },
+    {
+      "sourceId": "A2238",
+      "photoId": "photograph-A2238",
+      "assetId": "image-6082126df6b97d0c5bb4c398859639bc228b6a86-9262x6151-jpg"
+    },
+    {
+      "sourceId": "A2227",
+      "photoId": "photograph-A2227",
+      "assetId": "image-f0a2ad7fd22b06c5d9c118c163c62a5035f0c926-5366x3577-jpg"
+    },
+    {
+      "sourceId": "A2234",
+      "photoId": "photograph-A2234",
+      "assetId": "image-5beb051761a4fff7a30a0813ec9b06e681cde3d0-7008x4672-jpg"
+    },
+    {
+      "sourceId": "A0643",
+      "photoId": "photograph-A0643",
+      "assetId": "image-bd606ecccf477d4678c028d93103e90e86d94333-7008x4672-jpg"
+    },
+    {
+      "sourceId": "A1329",
+      "photoId": "photograph-A1329",
+      "assetId": "image-595be9e0b655f7ff35a793052e06cbf3d97b6b93-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A0349",
+      "photoId": "photograph-A0349",
+      "assetId": "image-96a9fe146df36ae152761c7ab9de013e78de3354-7864x5200-jpg"
+    },
+    {
+      "sourceId": "work_london-streets-002",
+      "photoId": "photograph-work_london-streets-002",
+      "assetId": "image-5e066b11bb934de0c972e2f09b772ca29db4824e-3000x2000-jpg"
+    },
+    {
+      "sourceId": "A2075",
+      "photoId": "photograph-A2075",
+      "assetId": "image-eb7a7e3d2138542229a8c8ef64f964424dae95c6-8515x5667-jpg"
+    },
+    {
+      "sourceId": "A0215",
+      "photoId": "photograph-A0215",
+      "assetId": "image-f317fc461ac72056cc7c49067a8a018dd17b8609-7008x4672-jpg"
+    },
+    {
+      "sourceId": "A2099",
+      "photoId": "photograph-A2099",
+      "assetId": "image-c2f358efa1c58312de26e57cce08399892e68af0-9520x6336-jpg"
+    },
+    {
+      "sourceId": "A0711",
+      "photoId": "photograph-A0711",
+      "assetId": "image-6818b6fba521b7638e46dfe47284958ae4ed4ad9-7864x5200-jpg"
+    },
+    {
+      "sourceId": "A2090",
+      "photoId": "photograph-A2090",
+      "assetId": "image-251f341d8b82a3447294f24826140a789521b1d2-9520x6336-jpg"
+    },
+    {
+      "sourceId": "A2084",
+      "photoId": "photograph-A2084",
+      "assetId": "image-671f3672be1d334a4f27216bf65f1838a6d1d21e-9014x5999-jpg"
+    },
+    {
+      "sourceId": "A2088",
+      "photoId": "photograph-A2088",
+      "assetId": "image-2ecc56fc8b98e14b017b6dbce964ca0dea21bf93-6336x9520-jpg"
+    },
+    {
+      "sourceId": "A2092",
+      "photoId": "photograph-A2092",
+      "assetId": "image-117291c4b4f21ea7ec61a304872fbd356dfedfa1-9344x6219-jpg"
+    },
+    {
+      "sourceId": "A1391",
+      "photoId": "photograph-A1391",
+      "assetId": "image-3b6adab83e40b33a20da38e288855a0548785e92-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A0652",
+      "photoId": "photograph-A0652",
+      "assetId": "image-6094ea600e2582cf7c3180c066640d2f7edd146c-7008x4672-jpg"
+    },
+    {
+      "sourceId": "A1363",
+      "photoId": "photograph-A1363",
+      "assetId": "image-97765242733bc9385db79c5c0e69bf3b4c417242-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A1320",
+      "photoId": "photograph-A1320",
+      "assetId": "image-6d0b98923f7926a9ac366b40fe9f224e07d37aee-8640x5760-jpg"
+    },
+    {
+      "sourceId": "A2054",
+      "photoId": "photograph-A2054",
+      "assetId": "image-16c5de114ac39270f4968a4829145b633cebe920-7341x4876-jpg"
+    },
+    {
+      "sourceId": "A2110",
+      "photoId": "photograph-A2110",
+      "assetId": "image-aadd230764b179105faecc0fba302f545f59c387-6193x4122-jpg"
+    },
+    {
+      "sourceId": "A1268",
+      "photoId": "photograph-A1268",
+      "assetId": "image-5e90f0b976ae2b30e3cbe12eb9b9f5bc00936c57-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A2071",
+      "photoId": "photograph-A2071",
+      "assetId": "image-fa57c1da877394a40850becea63400a3cad79722-9520x6336-jpg"
+    },
+    {
+      "sourceId": "A0708",
+      "photoId": "photograph-A0708",
+      "assetId": "image-76b4572e7e6811d8fff27879ebe730162009bb6c-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A1236",
+      "photoId": "photograph-A1236",
+      "assetId": "image-1509487fc475b81c524b48f032ee707cff136776-9528x6328-jpg"
+    },
+    {
+      "sourceId": "work_chisinau-moldova-002",
+      "photoId": "photograph-work_chisinau-moldova-002",
+      "assetId": "image-f0ad7a8928c3838c23984c1c88504606405de387-3000x2000-jpg"
+    },
+    {
+      "sourceId": "work_chisinau-moldova-012",
+      "photoId": "photograph-work_chisinau-moldova-012",
+      "assetId": "image-884f8c347c73ac24b147401b4a7230959298beae-3000x2000-jpg"
+    },
+    {
+      "sourceId": "N0463",
+      "photoId": "photograph-N0463",
+      "assetId": "image-843e3db5e8db3594cce77d13302b39f3c8d38291-8070x5380-jpg"
+    },
+    {
+      "sourceId": "work_chisinau-moldova-013",
+      "photoId": "photograph-work_chisinau-moldova-013",
+      "assetId": "image-e5e2bc9380622ae799be3dcf65edb5fdbb2d5e6f-2000x3000-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-002",
+      "photoId": "photograph-work_easter-in-jerusalem-002",
+      "assetId": "image-5e28217ae6a29d25068fda45a9b4f7bf72eef6fe-3000x2000-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-011",
+      "photoId": "photograph-work_easter-in-jerusalem-011",
+      "assetId": "image-9c2021001b768c884d6c39c536a2d58fe4c47ace-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-014",
+      "photoId": "photograph-work_easter-in-jerusalem-014",
+      "assetId": "image-7ef76f3828b9cc9b2368f75bac1078664d28fe6d-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-007",
+      "photoId": "photograph-work_easter-in-jerusalem-007",
+      "assetId": "image-bfe841f3efcc783538e18870f127b242d350cf44-2001x3000-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-027",
+      "photoId": "photograph-work_easter-in-jerusalem-027",
+      "assetId": "image-b6a4ec5f656e74f5e3f68deaf79b5cd50b3de45a-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-025",
+      "photoId": "photograph-work_easter-in-jerusalem-025",
+      "assetId": "image-b32c59226a5d961bc3ec9d7d0e19252dc1072aac-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-026",
+      "photoId": "photograph-work_easter-in-jerusalem-026",
+      "assetId": "image-6cd23857c18457739cb1214b9989aabea12e7b44-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-019",
+      "photoId": "photograph-work_easter-in-jerusalem-019",
+      "assetId": "image-b801b5093b25a8f0d8adce2a907e431cd872420c-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-029",
+      "photoId": "photograph-work_easter-in-jerusalem-029",
+      "assetId": "image-d98b9ff8dfcecc6c9a015dff084c8c021a6d9315-2001x3000-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-028",
+      "photoId": "photograph-work_easter-in-jerusalem-028",
+      "assetId": "image-d466f3ed50bcee37c443f5ba5501c5f8a7ea5735-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-jerusalem-034",
+      "photoId": "photograph-work_easter-in-jerusalem-034",
+      "assetId": "image-5a02fec9eabf19c1cd93f02acc1bda98fc2f5c28-2001x3000-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-lalibela-ethiopia-003",
+      "photoId": "photograph-work_easter-in-lalibela-ethiopia-003",
+      "assetId": "image-a49a5f65c6c8a658c449a0a6da8314c3892c4756-4000x2666-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-lalibela-ethiopia-011",
+      "photoId": "photograph-work_easter-in-lalibela-ethiopia-011",
+      "assetId": "image-7f5e79ef3c46b030516c5645d40f7084fb6b52e5-2667x4000-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-lalibela-ethiopia-010",
+      "photoId": "photograph-work_easter-in-lalibela-ethiopia-010",
+      "assetId": "image-3a76221fc8c9ec42b6fc86f94b71b5dc99c177a5-4000x2666-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-lalibela-ethiopia-015",
+      "photoId": "photograph-work_easter-in-lalibela-ethiopia-015",
+      "assetId": "image-4c839eebf2074154855431b5d121faac065c2300-4000x2666-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-lalibela-ethiopia-005",
+      "photoId": "photograph-work_easter-in-lalibela-ethiopia-005",
+      "assetId": "image-6ee81e235ec9f9384e3136b6862b12ba321c5092-4000x2666-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-lalibela-ethiopia-021",
+      "photoId": "photograph-work_easter-in-lalibela-ethiopia-021",
+      "assetId": "image-98069c18203d4b654264e4634d21077995d0c934-3093x4639-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-lalibela-ethiopia-025",
+      "photoId": "photograph-work_easter-in-lalibela-ethiopia-025",
+      "assetId": "image-607d1a6249b914a0045649841da4cb8463774922-4000x2666-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-lalibela-ethiopia-026",
+      "photoId": "photograph-work_easter-in-lalibela-ethiopia-026",
+      "assetId": "image-ec4cfc15da678466999ac06f01fd15f2e508e719-4000x2666-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-lalibela-ethiopia-033",
+      "photoId": "photograph-work_easter-in-lalibela-ethiopia-033",
+      "assetId": "image-01a6acbc549b22fdb6360989891f3348a2cea6cc-2666x4000-jpg"
+    },
+    {
+      "sourceId": "work_easter-in-lalibela-ethiopia-034",
+      "photoId": "photograph-work_easter-in-lalibela-ethiopia-034",
+      "assetId": "image-94133f16a2130ac8ef04cc372b067d86e28eb335-4000x2666-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-002",
+      "photoId": "photograph-work_bhutan-002",
+      "assetId": "image-4898ecdf63ff68ecff2fb889554ba4624e3e1e0d-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-009",
+      "photoId": "photograph-work_bhutan-009",
+      "assetId": "image-380c40b4af45be708a0bdc38a66f8487c73f84a9-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-020",
+      "photoId": "photograph-work_bhutan-020",
+      "assetId": "image-e90769d5397eff2fd6a1f5923559665223108760-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-025",
+      "photoId": "photograph-work_bhutan-025",
+      "assetId": "image-4f1345c977dee9689dba5ee51bd9e3e3a524845e-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-031",
+      "photoId": "photograph-work_bhutan-031",
+      "assetId": "image-f1f5be916f8b51d71da16df34c650d841dd51579-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-029",
+      "photoId": "photograph-work_bhutan-029",
+      "assetId": "image-b09d8a3b80b4dded606790a141013cb847835b6a-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-033",
+      "photoId": "photograph-work_bhutan-033",
+      "assetId": "image-c1575076242ac1111017bc0da298c7be84e656e5-3840x2561-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-051",
+      "photoId": "photograph-work_bhutan-051",
+      "assetId": "image-2419c8f0baee9d001cd069ec00865492af86fbc7-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-053",
+      "photoId": "photograph-work_bhutan-053",
+      "assetId": "image-e12c72e785c17285a445496a7c32d23b82296ce5-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-075",
+      "photoId": "photograph-work_bhutan-075",
+      "assetId": "image-97938f1337240ccb78348f0e408b26f25305aebd-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-091",
+      "photoId": "photograph-work_bhutan-091",
+      "assetId": "image-bffa301258a79c692b38d572cf980f9e55d1223b-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-064",
+      "photoId": "photograph-work_bhutan-064",
+      "assetId": "image-757a708e5ff2729ad37860750cdac8a2662e1fc2-3000x2002-jpg"
+    },
+    {
+      "sourceId": "work_tribal-ethiopia-036",
+      "photoId": "photograph-work_tribal-ethiopia-036",
+      "assetId": "image-ee678fb34836f31133b6f10577b7b0fa30a2326b-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_tribal-ethiopia-016",
+      "photoId": "photograph-work_tribal-ethiopia-016",
+      "assetId": "image-949825d712c58a54024812d1bc9c698dfcf64cf4-3840x5760-jpg"
+    },
+    {
+      "sourceId": "work_tribal-ethiopia-023",
+      "photoId": "photograph-work_tribal-ethiopia-023",
+      "assetId": "image-32f9c73ea178c4d7809e1d04645855c883b113d2-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_tribal-ethiopia-034",
+      "photoId": "photograph-work_tribal-ethiopia-034",
+      "assetId": "image-2b83e84a34ba5cebf0ea9cfd99acc8939d7c4069-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_tribal-ethiopia-050",
+      "photoId": "photograph-work_tribal-ethiopia-050",
+      "assetId": "image-fa9c0e79eff78c82890906c8f40f45928eb33fb1-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_rural-ethiopia-007",
+      "photoId": "photograph-work_rural-ethiopia-007",
+      "assetId": "image-08e8401c16016863a11564e651c0b9e75264e549-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_rural-ethiopia-009",
+      "photoId": "photograph-work_rural-ethiopia-009",
+      "assetId": "image-4e118cff5f3003568b3c37fac6f59077d3499ba1-3840x2560-jpg"
+    },
+    {
+      "sourceId": "work_tribal-ethiopia-058",
+      "photoId": "photograph-work_tribal-ethiopia-058",
+      "assetId": "image-c0d60e8a2293949e38dac3d39ed4cb964d98e52d-3840x2560-jpg"
+    },
+    {
+      "sourceId": "A1892",
+      "photoId": "photograph-A1892",
+      "assetId": "image-08e439fc8f3d69bb8bdfced5dfb39e4db209e469-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A1827",
+      "photoId": "photograph-A1827",
+      "assetId": "image-ab987f27c2dcdb8edc429e69bec1e8a0d898049e-9520x6336-jpg"
+    },
+    {
+      "sourceId": "work_rural-ethiopia-027",
+      "photoId": "photograph-work_rural-ethiopia-027",
+      "assetId": "image-2fa28b3c54ed5d947e85752faba65710afd53bac-3840x2264-jpg"
+    },
+    {
+      "sourceId": "work_rural-ethiopia-021",
+      "photoId": "photograph-work_rural-ethiopia-021",
+      "assetId": "image-e17a9234380b7473b2999defd901f8df9126f735-3840x2560-jpg"
+    },
+    {
+      "sourceId": "A1967",
+      "photoId": "photograph-A1967",
+      "assetId": "image-90ca7cfeb2ba03b7c5563e5a696fe7b264a6d4c0-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A1849",
+      "photoId": "photograph-A1849",
+      "assetId": "image-b5b6dfd8cfff5b39f8b05011cc81e5253102c69e-8829x5864-jpg"
+    },
+    {
+      "sourceId": "A1852",
+      "photoId": "photograph-A1852",
+      "assetId": "image-8c3d0cb0f469db5e32ad99734ceb046e159288bd-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A2010",
+      "photoId": "photograph-A2010",
+      "assetId": "image-5788c37a820f86cea80f47a48e05c301a35e6461-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A1861",
+      "photoId": "photograph-A1861",
+      "assetId": "image-f7e6558384628985d89383e2be9b26ae25efa58e-6328x9528-jpg"
+    },
+    {
+      "sourceId": "A2028",
+      "photoId": "photograph-A2028",
+      "assetId": "image-4f51d5843fb3d037733542b28a7d413fd9bdfa34-9520x6336-jpg"
+    },
+    {
+      "sourceId": "A1318",
+      "photoId": "photograph-A1318",
+      "assetId": "image-203b3650da41cce62f1b0dc4f475fc7cd7e2c3a4-8640x5760-jpg"
+    },
+    {
+      "sourceId": "A1349",
+      "photoId": "photograph-A1349",
+      "assetId": "image-de3cbe3f04d21d16ce61e736edeb0fc9b0d82858-9528x6328-jpg"
+    },
+    {
+      "sourceId": "N0509",
+      "photoId": "photograph-N0509",
+      "assetId": "image-1981d09cc63e92a015ad2ed209e02ef70ce4345f-2576x2613-jpg"
+    },
+    {
+      "sourceId": "N0515",
+      "photoId": "photograph-N0515",
+      "assetId": "image-76f448b70d7f1b0d951cd5f8721c9d47532df431-2613x2651-jpg"
+    },
+    {
+      "sourceId": "N0533",
+      "photoId": "photograph-N0533",
+      "assetId": "image-31c30f86af60f1114379de23784901711d65189d-1925x3045-jpg"
+    },
+    {
+      "sourceId": "N0595",
+      "photoId": "photograph-N0595",
+      "assetId": "image-919f35358b600cf0ab5a237fd7e9a99b29a37732-2032x3066-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-044",
+      "photoId": "photograph-work_bhutan-044",
+      "assetId": "image-f4c3cac8020015e269e08b1d0d2570159deaa85e-2666x4000-jpg"
+    },
+    {
+      "sourceId": "work_bhutan-048",
+      "photoId": "photograph-work_bhutan-048",
+      "assetId": "image-51aa4a68c757f49341d1c821b0cc76e1769a1204-5472x3648-jpg"
+    },
+    {
+      "sourceId": "work_mursi-009",
+      "photoId": "photograph-work_mursi-009",
+      "assetId": "image-8e5eb23f9053dad5c08b1674d06eaf97a649f123-1920x1280-jpg"
+    },
+    {
+      "sourceId": "work_nepal-012",
+      "photoId": "photograph-work_nepal-012",
+      "assetId": "image-37effd40622c7fe76880d1e360e0a9895e871350-2001x3000-jpg"
+    },
+    {
+      "sourceId": "work_peru-inca-033",
+      "photoId": "photograph-work_peru-inca-033",
+      "assetId": "image-fc355f6b1545f4c666fa52620a10ff472868e8d9-3000x2001-jpg"
+    },
+    {
+      "sourceId": "work_mursi-011",
+      "photoId": "photograph-work_mursi-011",
+      "assetId": "image-81f78ce2dffdd54744aef0da29b973068525d6b5-3840x2562-jpg"
+    },
+    {
+      "sourceId": "work_petra-jordan-002",
+      "photoId": "photograph-work_petra-jordan-002",
+      "assetId": "image-127ab6f6f836ef43a6bee84439aeaa71253e17eb-7952x5304-jpg"
+    },
+    {
+      "sourceId": "A0558",
+      "photoId": "photograph-A0558",
+      "assetId": "image-4aa9f2d14eec0166629c5faa3d1625f0ca274be0-4672x7008-jpg"
+    },
+    {
+      "sourceId": "A0505",
+      "photoId": "photograph-A0505",
+      "assetId": "image-84e7fcadf4aeaf902a9c5aaed7e33b3d864a184d-9528x6328-jpg"
+    },
+    {
+      "sourceId": "work_rural-ethiopia-019",
+      "photoId": "photograph-work_rural-ethiopia-019",
+      "assetId": "image-8c5289952af743ddb04279b2bf87a2d819ba80de-1920x2880-jpg"
+    },
+    {
+      "sourceId": "A0543",
+      "photoId": "photograph-A0543",
+      "assetId": "image-a93b4cb2fb1e1affc8f99220a60b98286f53625d-9528x6328-jpg"
+    },
+    {
+      "sourceId": "A0572",
+      "photoId": "photograph-A0572",
+      "assetId": "image-e3e22a1e93ccb18cc976e1822b03eed63adfe730-4038x6057-jpg"
+    },
+    {
+      "sourceId": "A0148",
+      "photoId": "photograph-A0148",
+      "assetId": "image-fe19a93a85923114e8e33022a190da23a1ba3edb-7008x4672-jpg"
+    },
+    {
+      "sourceId": "A0573",
+      "photoId": "photograph-A0573",
+      "assetId": "image-105632a0bf263801f4287f99fffffce433dd94ef-3511x5267-jpg"
+    },
+    {
+      "sourceId": "work_nepal-016",
+      "photoId": "photograph-work_nepal-016",
+      "assetId": "image-1c011e78e4012c64a8d293278db724ecdacb7ed3-3000x2001-jpg"
+    },
+    {
+      "sourceId": "A0185",
+      "photoId": "photograph-A0185",
+      "assetId": "image-373cb1a4833306469938e6339f312686f6755db7-5038x7557-jpg"
+    },
+    {
+      "sourceId": "A0194",
+      "photoId": "photograph-A0194",
+      "assetId": "image-d1f4813f57ffc5c87b44148602416b0ca34e06dc-8159x5439-jpg"
+    },
+    {
+      "sourceId": "work_patagonia-007",
+      "photoId": "photograph-work_patagonia-007",
+      "assetId": "image-6a942cd0150a4bda28fcbbd1d2de8509d89b3407-4000x2530-jpg"
+    },
+    {
+      "sourceId": "work_family-014",
+      "photoId": "photograph-work_family-014",
+      "assetId": "image-4e0505d163267d16a6e3c36ab20823421dd10157-5394x3598-jpg"
+    },
+    {
+      "sourceId": "work_patagonia-016",
+      "photoId": "photograph-work_patagonia-016",
+      "assetId": "image-6648228393c541189cec0e03d7adc29adef9c858-4000x2668-jpg"
+    },
+    {
+      "sourceId": "work_family-005",
+      "photoId": "photograph-work_family-005",
+      "assetId": "image-51e28e4aa0c910262c4182dccf1caf44113c7efd-3090x2048-jpg"
+    },
+    {
+      "sourceId": "A1209",
+      "photoId": "photograph-A1209",
+      "assetId": "image-affcb07b714b3f1698c043cc702ce71b60960170-6328x9528-jpg"
+    },
+    {
+      "sourceId": "A0064",
+      "photoId": "photograph-A0064",
+      "assetId": "image-56956159c2ad28f17074e0542776ae5260133ebc-7008x4672-jpg"
+    },
+    {
+      "sourceId": "N0375",
+      "photoId": "photograph-N0375",
+      "assetId": "image-2da103e52a1df4219cc34f7dcbdcb9c28f5a42b8-7352x4901-jpg"
+    },
+    {
+      "sourceId": "A1895",
+      "photoId": "photograph-A1895",
+      "assetId": "image-24be1adaa664c2559804c0c8079d46e84fced315-9528x6328-jpg"
+    }
+  ],
+  "collections": [
+    {
+      "sourceSlug": "street-theatre",
+      "id": "collection-street-theatre"
+    },
+    {
+      "sourceSlug": "through-glass",
+      "id": "collection-through-glass"
+    },
+    {
+      "sourceSlug": "small-exchanges",
+      "id": "collection-small-exchanges"
+    },
+    {
+      "sourceSlug": "weather",
+      "id": "collection-weather"
+    },
+    {
+      "sourceSlug": "urban-geometry",
+      "id": "collection-urban-geometry"
+    },
+    {
+      "sourceSlug": "after-dark",
+      "id": "collection-after-dark"
+    },
+    {
+      "sourceSlug": "moldova",
+      "id": "collection-moldova"
+    },
+    {
+      "sourceSlug": "jerusalem",
+      "id": "collection-jerusalem"
+    },
+    {
+      "sourceSlug": "lalibela",
+      "id": "collection-lalibela"
+    },
+    {
+      "sourceSlug": "bhutan",
+      "id": "collection-bhutan"
+    },
+    {
+      "sourceSlug": "ethiopia",
+      "id": "collection-ethiopia"
+    },
+    {
+      "sourceSlug": "summer-gatherings",
+      "id": "collection-summer-gatherings"
+    },
+    {
+      "sourceSlug": "artists",
+      "id": "collection-artists"
+    },
+    {
+      "sourceSlug": "encounters",
+      "id": "collection-encounters"
+    },
+    {
+      "sourceSlug": "tango",
+      "id": "collection-tango"
+    },
+    {
+      "sourceSlug": "high-ground",
+      "id": "collection-high-ground"
+    },
+    {
+      "sourceSlug": "close-to-home",
+      "id": "collection-close-to-home"
+    }
+  ]
+}

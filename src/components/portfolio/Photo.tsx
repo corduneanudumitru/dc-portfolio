@@ -1,4 +1,13 @@
-import Image from "next/image";
+"use client";
+import Image, { type ImageLoaderProps } from "next/image";
+function sanityLoader({ src, width, quality }: ImageLoaderProps) {
+  const url = new URL(src);
+  url.searchParams.set("w", String(width));
+  url.searchParams.set("q", String(quality || 85));
+  url.searchParams.set("fit", "max");
+  url.searchParams.set("auto", "format");
+  return url.toString();
+}
 import type { CSSProperties } from "react";
 import type { Photo as PhotoType } from "@/portfolio/data";
 export default function Photo({
@@ -14,7 +23,9 @@ export default function Photo({
 }) {
   return (
     <Image
+      loader={sanityLoader}
       src={photo.src}
+      loading={viewer ? "eager" : undefined}
       width={photo.width}
       height={photo.height}
       alt={locale === "ro" && photo.altRo ? photo.altRo : photo.alt}

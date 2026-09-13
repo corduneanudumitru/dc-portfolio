@@ -55,5 +55,8 @@ export const getPortfolio = cache(async (): Promise<Portfolio> => {
         .filter((g) => g.photos.length),
     }))
     .filter((c) => c.cover?.src && c.groups.length);
+  result.home.moldovaPhotos = (result.home.moldovaPhotos || []).filter(
+    (p) => p?.src && p.width > 0 && p.height > 0,
+  );
   return result;
 });

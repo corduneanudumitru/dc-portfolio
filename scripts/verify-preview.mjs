@@ -23,7 +23,7 @@ for (const expected of manifest.collections) {
   const c = collections.find((c) => c.slug.current === expected.slug);
   assert.deepEqual(
     c.groups.flatMap((g) =>
-      g.photos.map((p) => p._ref.replace("photograph.", "")),
+      g.photos.map((p) => p._ref.replace("photograph-", "")),
     ),
     expected.ids,
   );
@@ -35,11 +35,11 @@ for (const p of photos) {
 }
 assert.equal(
   collections.find((c) => c.slug.current === "small-exchanges").homeCover._ref,
-  "photograph.A2184",
+  "photograph-A2184",
 );
 assert.equal(
   collections.find((c) => c.slug.current === "encounters").homeCover._ref,
-  "photograph.work_bhutan-044",
+  "photograph-work_bhutan-044",
 );
 console.log(
   JSON.stringify(

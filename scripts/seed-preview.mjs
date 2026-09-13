@@ -35,10 +35,12 @@ const client = createClient({
 let assets = await client.fetch(
   '*[_type=="sanity.imageAsset"]{_id,originalFilename,url}',
 );
-const romanian=JSON.parse(fs.readFileSync(new URL("./romanian-copy.json",import.meta.url),"utf8"));
+const romanian = JSON.parse(
+  fs.readFileSync(new URL("./romanian-copy.json", import.meta.url), "utf8"),
+);
 const mapping = [];
 async function preparePhoto(p) {
-  const id = "photograph." + p.id;
+  const id = "photograph-" + p.id;
   const existing = await client.getDocument(id);
   if (existing) {
     mapping.push({
@@ -94,11 +96,11 @@ for (const [order, c] of data.collections.entries()) {
     photos: c.ids.slice(i, (i += size)).map((id) => ({
       _key: id,
       _type: "reference",
-      _ref: "photograph." + id,
+      _ref: "photograph-" + id,
     })),
   }));
   await client.createIfNotExists({
-    _id: "collection." + c.slug,
+    _id: "collection-" + c.slug,
     _type: "collection",
     title: c.title,
     titleRo: romanian[c.slug]?.[0],
@@ -107,11 +109,11 @@ for (const [order, c] of data.collections.entries()) {
     kind: c.kind,
     description: c.description,
     order,
-    cover: { _type: "reference", _ref: "photograph." + c.cover },
+    cover: { _type: "reference", _ref: "photograph-" + c.cover },
     homeCover: {
       _type: "reference",
       _ref:
-        "photograph." +
+        "photograph-" +
         ({ "small-exchanges": "A2184", encounters: "work_bhutan-044" }[
           c.slug
         ] || c.cover),
@@ -125,17 +127,17 @@ await client.createIfNotExists({
   _type: "portfolioHome",
   title: "People, places, passing moments.",
   opening: ["through-glass", "street-theatre", "small-exchanges"].map(
-    (slug) => ({ _key: slug, _type: "reference", _ref: "collection." + slug }),
+    (slug) => ({ _key: slug, _type: "reference", _ref: "collection-" + slug }),
   ),
   secondary: ["weather", "urban-geometry", "after-dark"].map((slug) => ({
     _key: slug,
     _type: "reference",
-    _ref: "collection." + slug,
+    _ref: "collection-" + slug,
   })),
   moldovaPhotos: ["A1329", "A2092"].map((id) => ({
     _key: id,
     _type: "reference",
-    _ref: "photograph." + id,
+    _ref: "photograph-" + id,
   })),
 });
 fs.writeFileSync(
@@ -146,7 +148,7 @@ fs.writeFileSync(
       photos: mapping,
       collections: data.collections.map((c) => ({
         sourceSlug: c.slug,
-        id: "collection." + c.slug,
+        id: "collection-" + c.slug,
       })),
     },
     null,
